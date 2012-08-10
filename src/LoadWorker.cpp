@@ -253,7 +253,7 @@ int LoadWorker::load_points_wf(Quadtree* qt)
 		if (it == point_data_paths.end())
 		{
 			char fname[] = "/tmp/lag-pointdata.XXXXXX";
-			mkstemp(fname);
+         tmpnam(fname);
 			point_data_path = std::string(fname);
 			point_data_paths.insert(
 					make_pair(flightline_number, point_data_path));

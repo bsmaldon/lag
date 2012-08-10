@@ -514,7 +514,7 @@ string Quadtree::getFileName(uint8_t flightLineNumber)
 	flighthash::iterator ity = flightTable_.find(flightLineNumber);
 	if (ity != flightTable_.end())
 	{
-		return ity->second.c_str();
+		return ity->second.string();
 	}
 	else
 	{
