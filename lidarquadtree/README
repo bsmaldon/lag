@@ -42,6 +42,27 @@ make install
 Use make clean if you want a fresh rebuild. The resulting .so library will be put in .libs
 and installed in (prefix)/lib/lidar/quadtree.
 
+Cross compiling for win32 with mingw32
+--------------------------------------
+
+If necessary (if there is no file named configure):
+libtoolize && autoheader && aclocal && automake --add-missing && autoconf
+
+Ensure that PKG_CONFIG_PATH is set to reflect the needs of the cross compiler
+
+Run:
+./configure --host=i686-pc-mingw32 --prefix=<where you want to install to>
+make
+
+And before running make install, check the file lidarquadtree.pc for correct
+settings, typically it may point to a local linux installation of lidarquadtree,
+ignoring its own propper configuration. This may be fixed in future, but
+otherwise; set prefix, exec_prefix, libdir, and includedir to reflect the
+locations of your soon-to-be windows installation of lidarquadtree
+
+Then finally run:
+make install
+
 Compiling on win32
 ------------------
 
