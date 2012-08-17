@@ -420,8 +420,19 @@ void TwoDeeOverview::mainimage(PointBucket** buckets,int numbuckets)
 
    //Prepare OpenGL.
 
-   if (awaitClearGLData(true) || awaitClearGLControl(true))
+   if (awaitClearGLData(true))
       return;
+
+   // grabbed one but not the other, make sure both are released
+   if (awaitClearGLControl(true))
+   {
+      Glib::Mutex::Lock lock (GL_action);
+
+      GL_data_impede = false;
+      GL_data_condition.signal();
+
+      return;
+   }
 
    signal_InitGLDraw();
 
@@ -746,12 +757,23 @@ bool TwoDeeOverview::drawpointsfrombuckets(PointBucket** buckets,int numbuckets,
          cout << vertices[3*pointcount/2] << endl;
 #endif
 
-         if(!interrupt_drawing)
-         {
 #ifdef DEBUG_THREAD
             cout << "Sending draw signal." << endl;
 #endif
 
+         if (interrupt_drawing)
+         {
+            Glib::Mutex::Lock lock (GL_action);
+
+            // release access to GL data
+            GL_data_impede = false;
+            GL_data_condition.signal();
+
+            return false;
+         }
+         
+         else
+         {
             signal_DrawGLToCard();
 
             // Main thread must not attempt to create a new thread like this 
@@ -767,6 +789,7 @@ bool TwoDeeOverview::drawpointsfrombuckets(PointBucket** buckets,int numbuckets,
                   signal_FlushGLToScreen();
                }
          }
+
 #ifdef DEBUG_THREAD
          else
          {
@@ -781,8 +804,8 @@ bool TwoDeeOverview::drawpointsfrombuckets(PointBucket** buckets,int numbuckets,
 #endif
 
    // Asserts that GL is finished sending data
-   if (awaitClearGLData(false))
-      return false;
+   //if (awaitClearGLData(false))
+   //   return false;
 
    return true;
 }
@@ -1028,17 +1051,6 @@ bool TwoDeeOverview::drawviewable(int imagetype)
       return true;
    }
 
-   // This causes any call to ::mainimage to stop
-   // Disabled as a result of drawings completely failing to render
-   // TODO: Fix for performance on slow computers
-   //if (drawing_thread->isDrawing())
-   //{
-   //   abortFrame(true);
-
-   //   //awaitClearGLControl(true);
-   //   //signal_FlushGLToScreen();
-   //}
-
    // Draw the main image.
    if(imagetype==1 || (!drawnsinceload && imagetype == 3))
    {
@@ -1089,6 +1101,11 @@ bool TwoDeeOverview::drawviewable(int imagetype)
          }
          else return drawviewable(2);
       }
+
+      // Earliest time in the function call that it is definitely known
+      // drawing_thread->draw will occur, so abort any currently drawing frames
+      if (drawing_thread->isDrawing())
+         abortFrame(true);
 
       numbuckets = pointvector->size();
 
