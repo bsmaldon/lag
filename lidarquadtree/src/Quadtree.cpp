@@ -66,7 +66,7 @@ Quadtree::Quadtree(double minX, double minY, double maxX, double maxY, int cap,
 		int numberOfResolutionLevels)
 {
 	emptyTreeInit(minX, minY, maxX, maxY, cap, cacheSize, depth, resolutionBase,
-			numberOfResolutionLevels, NULL, fs::temp_directory_path());
+			numberOfResolutionLevels, NULL, fs::path("/tmp"));
 
 }
 
