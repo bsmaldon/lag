@@ -33,11 +33,13 @@
 #include "Quadtree.h"
 #include "SelectionBox.h"
 #include "PointBucket.h"
-#include <vector>
 #include <boost/bind.hpp>
 #include "LagDisplay.h"
-#include <list>
+#include "ProfileTypes.h"
 
+#include <vector>
+#include <list>
+#include <utility>
 
 /*
 ===============================================================================
@@ -58,7 +60,7 @@ public:
    void clearProfile();
 
    //This classifies the points selected by the profile fence.
-   bool classify(uint8_t classification);
+   bool classify(Point fenceStart, Point fenceEnd, uint8_t classification);
 
    //Moves the view using keyboard input.
    bool on_pan_key(GdkEventKey *event,double scrollspeed);
@@ -86,6 +88,16 @@ public:
    bool drawviewable(int imagetype);
 
    //Public methods:
+
+   // Methods managing the classification queue
+   bool queueActiveFence(uint8_t);
+   bool hasClassifyJobs();
+   void enqueueClassify(FenceType f, uint8_t c);
+   ClassificationJob popNextClassify();
+
+   // Clear the (one) fence being processed
+   void clearProcessingFence();
+
    //Gets the parameters of the profile and then draws it to the screen.
    bool loadprofile(std::vector<double> profxs, std::vector<double> profys,int profps);
 
@@ -312,11 +324,18 @@ protected:
 
    //Fencing:
 
-   //The start coordinates for the fence.
-   Point fenceStart;
+   // Co-ordinates of either side of the fence
+   // first: start of fence
+   // second: end of fence
+   //pair <Point,Point> activeFence;
+   FenceType activeFence;
+   list <ClassificationJob> classificationQueue;
 
-   //The end coordinates for the fence.
-   Point fenceEnd;
+   Glib::Mutex classificationQueue_mutex;
+
+   // Values for the fence being processed by the (one) classification job
+   bool isProcessingFence;
+   FenceType processingFence;
 
    //Determines whether or not the fence should be drawn.
    bool fencing;
@@ -377,7 +396,7 @@ protected:
    void makerulerbox();
 
    //Make rectangle showing where the fence is.
-   void makefencebox();
+   void makefencebox(Point fenceStart, Point fenceEnd, Colour c);
 
    //This makes a height scale.
    void makeZscale();

@@ -4,7 +4,7 @@
  ClassifyWorker.h
 
  Created on: 11 May 2012
- Authors: jaho
+ Authors: jaho, Berin Smaldon
 
  LIDAR Analysis GUI (LAG), viewer for LIDAR files in .LAS or ASCII format
  Copyright (C) 2009-2012 Plymouth Marine Laboratory (PML)
@@ -30,6 +30,7 @@
 
 #include <stdint.h>
 #include "Worker.h"
+#include "ProfileTypes.h"
 
 class Profile;
 
@@ -44,13 +45,24 @@ class Profile;
 class ClassifyWorker : public Worker
 {
 public:
-	ClassifyWorker(Profile* prof, uint8_t clas);
+	ClassifyWorker(Profile* prof);
+   ~ClassifyWorker();
+   void nudge();
+   void stop();
+
+   ClassificationJob getCurrentJob();
 
 protected:
 	void run();
 
+private:
 	Profile* profile;
-	uint8_t classification;
+   ClassificationJob currentjob;
+   bool stopFlag;
+
+   // Threading control
+   Glib::Cond classify_condition;
+   Glib::Mutex internal_mutex;
 };
 
 

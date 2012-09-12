@@ -44,7 +44,10 @@ ProfileWindow::ProfileWindow(Profile *prof, TwoDeeOverview *tdo, Gtk::Window *pr
 		overviewwindow	(overviewwindow)
 {
 	profileworker = NULL;
-	classifyworker = NULL;
+
+	classifyworker = new ClassifyWorker(this->prof);
+	classifyworker->sig_done.connect(sigc::mem_fun(*this, &ProfileWindow::points_classified));
+	classifyworker->start();
 
 	load_xml(builder);
 
@@ -331,7 +334,6 @@ void ProfileWindow::profile_loaded()
 {
 	delete profileworker;
 	profileworker = NULL;
-
 	make_busy_cursor(false);
 
 	set_statusbar_label("");
@@ -456,19 +458,15 @@ void ProfileWindow::on_movingaveragerangeselect()
 */
 void ProfileWindow::on_classbutton_clicked()
 {
-	if (classifyworker != NULL)
-		return;
-
 	set_statusbar_label("Classifying...");
 
 	if(prof->is_realized())
 	{
-		//prof->classify(classificationselect->get_value_as_int());
-		classifyworker = new ClassifyWorker(this->prof, classificationselect->get_value_as_int());
-		classifyworker->sig_done.connect(sigc::mem_fun(*this, &ProfileWindow::points_classified));
-		classifyworker->start();
+      prof->queueActiveFence(classificationselect->get_value_as_int());
+      classifyworker->nudge();
 
-		make_busy_cursor(true);
+      if (prof->hasClassifyJobs())
+		   make_busy_cursor(true);
 	}
 }
 
@@ -479,13 +477,11 @@ void ProfileWindow::on_classbutton_clicked()
 */
 void ProfileWindow::points_classified()
 {
-	delete classifyworker;
-	classifyworker = NULL;
-
-	prof->draw_profile(false);
+   prof->draw_profile(false);
 
 	// Set cursor back to normal
-	make_busy_cursor(false);
+   if (!(prof->hasClassifyJobs()))
+	   make_busy_cursor(false);
 
 	set_statusbar_label("");
 

@@ -60,7 +60,10 @@ Profile::Profile(const Glib::RefPtr<const Gdk::GL::Config>& config, int bucketli
 		rulering			(false),
 		rulerwidth			(3),
 		fencing				(false),
-		hideProfNoise		(false)
+		hideProfNoise		(false),
+      isProcessingFence (false),
+      vertices          (NULL),
+      colours           (NULL)
 {
 	brightnessBy = brightnessByNone;
 	zoompower = 0.7;
@@ -127,6 +130,96 @@ Profile::~Profile()
 		}
 		delete[] linez;
 	}
+}
+
+/*
+================================================================================
+ Profile::queueActiveFence
+
+ Enqueues the active fence
+================================================================================
+*/
+bool Profile::queueActiveFence(uint8_t classification)
+{
+   if (fencing)
+      enqueueClassify(activeFence, classification);
+
+   return fencing;
+}
+
+/*
+================================================================================
+ Profile::hasClassifyJobs
+================================================================================
+*/
+bool Profile::hasClassifyJobs()
+{
+   Glib::Mutex::Lock lock (classificationQueue_mutex);
+
+   return classificationQueue.size() > 0;
+}
+
+/*
+================================================================================
+ Profile::enqueueClassify
+
+ Enqueues a classification that will happen when ready
+
+ Parameters:
+   FenceType f - FenceType to enqueue
+   uint8_t c   - Classification to apply
+================================================================================
+*/
+void Profile::enqueueClassify(FenceType f, uint8_t c)
+{
+   Glib::Mutex::Lock lock (classificationQueue_mutex);
+   
+   // an assertion could be made that <NULL,NULL> is never enqueued
+
+   classificationQueue.push_back(make_pair(f,c));
+}
+
+/*
+================================================================================
+ Profile::popNextClassify
+
+ Removes an item from the classification queue and returns it
+
+ Returns:
+   ClassificationJob from the front of the queue, classification is 255 when
+   there are no jobs available
+================================================================================
+*/
+ClassificationJob Profile::popNextClassify()
+{
+   Glib::Mutex::Lock lock (classificationQueue_mutex);
+   ClassificationJob popped;
+
+   if (classificationQueue.empty())
+      popped = make_pair(make_pair(Point(0),Point(0)),255);
+   else
+   {
+      popped = classificationQueue.front();
+      classificationQueue.pop_front();
+
+      processingFence = popped.first;
+      isProcessingFence = true;
+   }
+
+   return popped;
+}
+
+/*
+================================================================================
+ Profile::clearProcessingFence
+
+ Assuming that only one fence is being processed at a time, indicates to this
+ profile that the fence being tracked as processed has been completed
+================================================================================
+*/
+void Profile::clearProcessingFence()
+{
+   isProcessingFence = false;
 }
 
 /*
@@ -303,27 +396,32 @@ bool Profile::shift_viewing_parameters(GdkEventKey* event, double shiftspeed)
 	// moving a slanted profile.
 	double sameaxis = shiftspeed * breadth / length;
 	double diffaxis = -shiftspeed * height / length;
+
+   // translations on fence points here have been ommitted due to work on
+   // issue #17 (see github), unknown whether program would need to perform
+   // translation on all queued classification jobs, which could lead to
+   // race conditions
 	switch (event->keyval)
 	{
 	case GDK_W:
 		centre.translate(diffaxis, sameaxis, 0);
-		fenceStart.translate(diffaxis, sameaxis, 0);
-		fenceEnd.translate(diffaxis, sameaxis, 0);
+		//activeFence.first.translate(diffaxis, sameaxis, 0);
+		//activeFence.second.translate(diffaxis, sameaxis, 0);
 		break;
 	case GDK_S:
 		centre.translate(-diffaxis, -sameaxis, 0);
-		fenceStart.translate(-diffaxis, -sameaxis, 0);
-		fenceEnd.translate(-diffaxis, -sameaxis, 0);
+		//activeFence.first.translate(-diffaxis, -sameaxis, 0);
+		//activeFence.second.translate(-diffaxis, -sameaxis, 0);
 		break;
 	case GDK_A:
 		centre.translate(-sameaxis, diffaxis, 0);
-		fenceStart.translate(-sameaxis, diffaxis, 0);
-		fenceEnd.translate(-sameaxis, diffaxis, 0);
+		//activeFence.first.translate(-sameaxis, diffaxis, 0);
+		//activeFence.second.translate(-sameaxis, diffaxis, 0);
 		break;
 	case GDK_D:
 		centre.translate(sameaxis, -diffaxis, 0);
-		fenceStart.translate(sameaxis, -diffaxis, 0);
-		fenceEnd.translate(sameaxis, -diffaxis, 0);
+		//activeFence.first.translate(sameaxis, -diffaxis, 0);
+		//activeFence.second.translate(sameaxis, -diffaxis, 0);
 		break;
 	default:
 		return false;
@@ -401,7 +499,7 @@ bool Profile::loadprofile(vector<double> profxs, vector<double> profys, int prof
 	// precisely a monoclinic or parallelogram prism as only the fence
 	// parallelogram can be non-rectangular), which, when the fence is not
 	// "slanted", will also be a cuboid. This paralleogram prism (from the point
-	// of view of the fence (as cross-sectioprofile_mainimage_n) especially) contains the points
+	// of view of the fence (as cross-section) especially) contains the points
 	// to be classified.
 	this->profps = profps;
 	this->profxs = profxs;
@@ -665,8 +763,8 @@ bool Profile::draw_profile(bool changeview)
 			// Reset the fence to prevent the situation where a fence is preserved
 			// from profile to profile in a warped fashion allowing accidental
 			// classification.
-			fenceStart.move(0, 0, 0);
-			fenceEnd.move(0, 0, 0);
+			activeFence.first.move(0, 0, 0);
+			activeFence.second.move(0, 0, 0);
 			return returntostart();
 		}
 		// Otherwise trust that any changes (like with scrolling) are dealt with
@@ -761,14 +859,13 @@ void Profile::classify_bucket(double *xs, double *ys, double *zs,
 }
 
 /*
-==================================
+================================================================================
  Profile::classify
 
- This takes the points selected by the fence and then classifies them as
- the type sent.
-==================================
+ Classifies points within a given fence as the given classification
+================================================================================
 */
-bool Profile::classify(uint8_t classification)
+bool Profile::classify(Point fenceStart, Point fenceEnd, uint8_t classification)
 {
 	// If there should not be any points there or if the fence covers no
 	// area/volume, do nothing. Otherwise get a divide by zero error in the i
@@ -1274,13 +1371,11 @@ bool Profile::on_fence_start(GdkEventButton* event)
 
 		//The horizontal distance is a combination of x and y so:
 		double hypotenuse = pixelsToImageUnits(event->x - get_width() / 2);
-		fenceEnd.move(
-				centre.getX() + viewer.getX() + hypotenuse * breadth / length,
-				centre.getY() + viewer.getY() + hypotenuse * height / length,
-				centre.getZ() + viewer.getZ()
-						- pixelsToImageUnits(event->y - get_height() / 2));
-
-		fenceStart = fenceEnd;
+      activeFence.second = centre + viewer;
+      activeFence.second.translate(  hypotenuse * breadth / length,
+                              hypotenuse * height  / length,
+                              -pixelsToImageUnits(event->y - get_height() / 2));
+		activeFence.first = activeFence.second;
 
 		// This causes the event box containing the profile to grab the focus,
 		// and so to allow keyboard control of the profile (this is not done
@@ -1314,11 +1409,10 @@ bool Profile::on_fence(GdkEventMotion* event)
 
 		//The horizontal distance is a combination of x and y so:
 		double hypotenuse = pixelsToImageUnits(event->x - get_width() / 2);
-		fenceEnd.move(
-				centre.getX() + viewer.getX() + hypotenuse * breadth / length,
-				centre.getY() + viewer.getY() + hypotenuse * height / length,
-				centre.getZ() + viewer.getZ()
-						- pixelsToImageUnits(event->y - get_height() / 2));
+      activeFence.second = centre + viewer;
+      activeFence.second.translate(  hypotenuse * breadth / length,
+                              hypotenuse * height  / length,
+                              -pixelsToImageUnits(event->y - get_height() / 2));
 		return drawviewable(2);
 	}
 	else if ((event->state & Gdk::BUTTON2_MASK) == Gdk::BUTTON2_MASK)
@@ -1366,26 +1460,26 @@ bool Profile::on_fence_key(GdkEventKey *event, double scrollspeed)
 	switch (event->keyval)
 	{
 	case GDK_W: // Up
-		fenceStart.translate(0, 0, hypotenuse);
-		fenceEnd.translate(0, 0, hypotenuse);
+		activeFence.first.translate(0, 0, hypotenuse);
+		activeFence.second.translate(0, 0, hypotenuse);
 		break;
 	case GDK_S: // Down
-		fenceStart.translate(0, 0, -hypotenuse);
-		fenceEnd.translate(0, 0, -hypotenuse);
+		activeFence.first.translate(0, 0, -hypotenuse);
+		activeFence.second.translate(0, 0, -hypotenuse);
 		break;
 	case GDK_A: // Left
-		fenceStart.translate(-hypotenuse * breadth / length,
+		activeFence.first.translate(-hypotenuse * breadth / length,
 				-hypotenuse * height / length, 0);
 
-		fenceEnd.translate(-hypotenuse * breadth / length,
+		activeFence.second.translate(-hypotenuse * breadth / length,
 				-hypotenuse * height / length, 0);
 		break;
 	case GDK_D: // Right
 
-		fenceStart.translate(hypotenuse * breadth / length,
+		activeFence.first.translate(hypotenuse * breadth / length,
 				hypotenuse * height / length, 0);
 
-		fenceEnd.translate(hypotenuse * breadth / length,
+		activeFence.second.translate(hypotenuse * breadth / length,
 				hypotenuse * height / length, 0);
 		;
 		break;
@@ -1401,9 +1495,9 @@ bool Profile::on_fence_key(GdkEventKey *event, double scrollspeed)
  Profile::makefencebox
 ==================================
 */
-void Profile::makefencebox()
+void Profile::makefencebox(Point fenceStart, Point fenceEnd, Colour c)
 {
-	glColor3f(0.0, 0.0, 1.0);
+   glColor3f(c.getR(), c.getG(), c.getB());
 	if (slanted)
 	{
 		double breadth = fenceEnd.getX() - fenceStart.getX();
@@ -1642,10 +1736,33 @@ void Profile::makerulerbox()
 */
 void Profile::drawoverlays()
 {
+   const Colour activeFenceColour (0.0, 0.0, 1.0);
+   const Colour queuedFenceColour (0.0, 0.3, 0.3);
+   const Colour processingFenceColour (0.0, 0.6, 0.6);
+   ClassificationJob j;
+
 	if (rulering)
 		makerulerbox();
 	if (fencing)
-		makefencebox();
+		makefencebox(activeFence.first, activeFence.second, activeFenceColour);
+
+   // queued classification jobs
+   {
+      Glib::Mutex::Lock lock (classificationQueue_mutex);
+
+      for (
+            list<ClassificationJob>::iterator it=classificationQueue.begin();
+            it != classificationQueue.end();
+            it++
+          )
+         makefencebox(it->first.first, it->first.second, queuedFenceColour);
+   }
+
+   // active classification job
+   if (isProcessingFence)
+      makefencebox(processingFence.first, processingFence.second,
+         processingFenceColour);
+
 	if (showheightscale)
 		makeZscale();
 }
