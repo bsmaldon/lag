@@ -41,9 +41,11 @@
 
 #ifdef __WIN32
 #include <windows.h>
+#define FILE_SEPERATOR_STRING "\\"
 #else
 #include <sys/stat.h>
 #include <errno.h>
+#define FILE_SEPERATOR_STRING "/"
 #endif
 
 using namespace std;
@@ -98,25 +100,21 @@ PointBucket::PointBucket(int capacity, double minX, double minY, double maxX,
    // each pair of digits as a sub folder of the previous
    for (int k = s.size(); k >= 2; k = k - 2)
    {
-#ifndef __WIN32
-      instanceDirectory_ += "/";
-#else
-      instanceDirectory_ += "\\";
-#endif
+      instanceDirectory_ += FILE_SEPERATOR_STRING;
 
       instanceDirectory_ += s.substr(k - 2, 2);
 
 #ifndef __WIN32
       e = mkdir(instanceDirectory_.c_str(), S_IRWXU);
-#else
-      if (CreateDirectory(instanceDirectory_.c_str(), NULL))
-         e = 0;
-      else
-         e = -1;
-#endif
 
       if (e && errno != EEXIST)
          throw QuadtreeIOException();
+#else
+      e = CreateDirectory(instanceDirectory_.c_str(), NULL);
+
+      if ( (e == 0) && (GetLastError() != ERROR_ALREADY_EXISTS) )
+         throw QuadtreeIOException();
+#endif
    }
 
    // append the boundaries to the filename
@@ -151,7 +149,7 @@ PointBucket::PointBucket(int capacity, double minX, double minY, double maxX,
 	   points_[k] = NULL;
 
       snprintf(buffer, 16, "%d", pointInterval_[k]);
-	   filePath_[k] = instanceDirectory_ +
+	   filePath_[k] = instanceDirectory_ + FILE_SEPERATOR_STRING +
          resolution_string + buffer;
    }
 
