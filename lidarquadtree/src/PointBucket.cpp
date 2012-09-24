@@ -32,16 +32,21 @@
 
 #include "PointBucket.h"
 #include "CacheMinder.h"
+#include "QuadtreeExceptions.h"
 
 #include <cstdio>
-#include "boost/filesystem.hpp"
-#include "boost/lexical_cast.hpp"
 #include <float.h>
 #include <limits.h>
 #include <math.h>
 
+#ifdef __WIN32
+#include <windows.h>
+#else
+#include <sys/stat.h>
+#include <errno.h>
+#endif
+
 using namespace std;
-namespace fs = boost::filesystem;
 
 // static shared working memory
 // these are reused alot as each use writes over the previous values
@@ -50,7 +55,7 @@ unsigned char *PointBucket::compressedData = NULL;
 
 PointBucket::PointBucket(int capacity, double minX, double minY, double maxX, 
                          double maxY, CacheMinder *MCP,
-                         boost::filesystem::path instancedirectory,
+                         string instancedirectory,
                          int resolutionBase, int numberOfResolutionLevels)
 :
         minIntensity_		(USHRT_MAX),
@@ -70,7 +75,13 @@ PointBucket::PointBucket(int capacity, double minX, double minY, double maxX,
 
 
 {
-   using boost::lexical_cast;
+   // construct a string indicating the address of this
+   string s;
+   char pointer_string[13];
+   int e;
+
+   snprintf(pointer_string, 13, "%012x", (unsigned long)this);
+   s = string(pointer_string);
 
    // all attributes which have a value for each resolution level
    serialized_ = new bool[numberOfResolutionLevels_];
@@ -83,24 +94,50 @@ PointBucket::PointBucket(int capacity, double minX, double minY, double maxX,
    pointInterval_ = new int[numberOfResolutionLevels_];
    numberOfSerializedPoints_ = new int[numberOfResolutionLevels_];
 
-   string s = boost::lexical_cast<string> (this);
-
    // append the PointBuckets 'this' pointer value to the filename with 
    // each pair of digits as a sub folder of the previous
-   for (int k = s.size(); k > 2; k = k - 2)
+   for (int k = s.size(); k >= 2; k = k - 2)
    {
-      instancedirectory /= s.substr(k - 2, 2);
-      fs::create_directory(instancedirectory);
+#ifndef __WIN32
+      instanceDirectory_ += "/";
+#else
+      instanceDirectory_ += "\\";
+#endif
+
+      instanceDirectory_ += s.substr(k - 2, 2);
+
+#ifndef __WIN32
+      e = mkdir(instanceDirectory_.c_str(), S_IRWXU);
+#else
+      if (CreateDirectory(instanceDirectory_.c_str(), NULL))
+         e = 0;
+      else
+         e = -1;
+#endif
+
+      if (e && errno != EEXIST)
+         throw QuadtreeIOException();
    }
 
    // append the boundaries to the filename
-   filePath_ = new fs::path[numberOfResolutionLevels];
+   filePath_ = new string[numberOfResolutionLevels];
 
    // setup each of the resolution levels
-   s =   lexical_cast<string> (minX_).substr(0, 20) + "-" + 
-         lexical_cast<string> (minY_).substr(0, 20) + "_" + 
-         lexical_cast<string> (maxY_).substr(0, 20) + "-" + 
-         lexical_cast<string> (maxX_).substr(0, 20) + "_1_";
+   char resolution_string [] = // [85]
+      "XXXXXXXXXXXXXXXXXXXX-XXXXXXXXXXXXXXXXXXXX_XXXXXXXXXXXXXXXXXXXX-XXXXXXXXXXXXXXXXXXXX_1_";
+   char buffer[16];
+
+   // populates resolution_string, then regenerates -s and _s that were overwritten
+   snprintf(&resolution_string[ 0], 21, "%.40g", minX_);
+   snprintf(&resolution_string[21], 21, "%.40g", minY_);
+   snprintf(&resolution_string[42], 21, "%.40g", maxY_);
+   snprintf(&resolution_string[63], 21, "%.40g", maxX_);
+
+   resolution_string[20] = '-';
+   resolution_string[41] = '_';
+   resolution_string[62] = '-';
+   resolution_string[83] = '_';
+
    for (int k = 0; k < numberOfResolutionLevels; ++k)
    {
 	   pointInterval_[k] = int(pow(resolutionBase_, k));
@@ -112,8 +149,10 @@ PointBucket::PointBucket(int capacity, double minX, double minY, double maxX,
 	   updated_[k] = false;
 	   compressedDataSize_[k] = 0;
 	   points_[k] = NULL;
-	   filePath_[k] = instancedirectory /
-                     (s + lexical_cast<string> (pointInterval_[k]));
+
+      snprintf(buffer, 16, "%d", pointInterval_[k]);
+	   filePath_[k] = instanceDirectory_ +
+         resolution_string + buffer;
    }
 
    if (workingMemory == NULL)
@@ -133,13 +172,13 @@ PointBucket::~PointBucket()
 {
    int cachetotal = 0;
 
-   // when a point bucket is deleted the corresponding serial file in
+   // when a point bucket is deleted the corresponding serial file i+
    // secondary memory is also deleted
    for (int k = 0; k < numberOfResolutionLevels_; ++k)
    {
       if (serialized_[k])
       {
-    	  fs::remove(filePath_[k]);
+    	  remove(filePath_[k].c_str());
       }
 
       // if the bucket is allocated memory this is freed
@@ -180,7 +219,7 @@ void PointBucket::uncache()
          {
             //code to save points array
             FILE * file;
-            file = fopen(filePath_[k].string().c_str(), "wb");
+            file = fopen(filePath_[k].c_str(), "wb");
             if (file == NULL)
             {
                throw FileException("couldn't open cache file to write");
@@ -237,7 +276,7 @@ void PointBucket::uncache()
 // the parameter "force" defines whether the another bucket can be forced out
 // of cache to accomodate this one
 // if space cannot be found false is returned
-bool PointBucket::cache(bool force, int resolution)
+bool  PointBucket::cache(bool force, int resolution)
 {
    assert(points_[resolution] == NULL);
    if (resolution > numberOfResolutionLevels_)
@@ -263,7 +302,7 @@ bool PointBucket::cache(bool force, int resolution)
 
       // read the file in
       FILE *pFile;
-      pFile = fopen(filePath_[resolution].string().c_str(), "rb");
+      pFile = fopen(filePath_[resolution].c_str(), "rb");
       if (pFile == NULL)
       {
          throw FileException("couldn't open cache file to read");
