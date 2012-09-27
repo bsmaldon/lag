@@ -35,13 +35,13 @@
 */
 AdvancedOptionsWindow::AdvancedOptionsWindow(TwoDeeOverview *tdo, Profile *prof, const Glib::RefPtr<Gtk::Builder>& builder)
 :
-		tdo		(tdo),
-		prof	(prof)
+      tdo   (tdo),
+      prof  (prof)
 {
-	load_xml(builder);
-	connect_signals();
+   load_xml(builder);
+   connect_signals();
 
-	movespeedselect->set_value(10.00);
+   movespeedselect->set_value(10.00);
     maindetailselect->set_value(1.50);
     previewdetailselectprof->set_value(2.0);
 
@@ -94,38 +94,38 @@ AdvancedOptionsWindow::~AdvancedOptionsWindow()
 */
 void AdvancedOptionsWindow::load_xml(const Glib::RefPtr<Gtk::Builder>& builder)
 {
-	builder->get_widget("advancedoptionsdialog",advancedoptionsdialog);
-	builder->get_widget("fractionalshiftcheck",fractionalshiftcheck);
-	builder->get_widget("movespeedselect",movespeedselect);
-	builder->get_widget("classcheckbutton0",classcheckbutton0);
-	builder->get_widget("classcheckbutton2",classcheckbutton2);
-	builder->get_widget("classcheckbutton3",classcheckbutton3);
-	builder->get_widget("classcheckbutton4",classcheckbutton4);
-	builder->get_widget("classcheckbutton5",classcheckbutton5);
-	builder->get_widget("classcheckbutton6",classcheckbutton6);
-	builder->get_widget("classcheckbutton7",classcheckbutton7);
-	builder->get_widget("classcheckbutton8",classcheckbutton8);
-	builder->get_widget("classcheckbutton9",classcheckbutton9);
-	builder->get_widget("classcheckbutton12",classcheckbutton12);
-	builder->get_widget("classcheckbuttonA",classcheckbuttonA);
-	builder->get_widget("heightmaxselect",heightmaxselect);
-	builder->get_widget("heightminselect",heightminselect);
-	builder->get_widget("heightscrollbar",heightscrollbar);
-	builder->get_widget("heightoffsetselect",heightoffsetselect);
-	builder->get_widget("heightfloorselect",heightfloorselect);
-	builder->get_widget("intensitymaxselect",intensitymaxselect);
-	builder->get_widget("intensityminselect",intensityminselect);
-	builder->get_widget("intensityscrollbar",intensityscrollbar);
-	builder->get_widget("intensityoffsetselect",intensityoffsetselect);
-	builder->get_widget("intensityfloorselect",intensityfloorselect);
-	builder->get_widget("drawingresetbutton",drawingresetbutton);
-	builder->get_widget("maindetailselect",maindetailselect);
-	builder->get_widget("maindetailselectprof",maindetailselectprof);
-	builder->get_widget("previewdetailselectprof",previewdetailselectprof);
-	builder->get_widget("profdisplaynoise", profdisplaynoise);
-	builder->get_widget("tdodisplaynoise", tdodisplaynoise);
-	builder->get_widget("fullrefreshonpanning", fullrefreshonpanning);
-	builder->get_widget("backgroundcolorbutton", backgroundcolorbutton);
+   builder->get_widget("advancedoptionsdialog",advancedoptionsdialog);
+   builder->get_widget("fractionalshiftcheck",fractionalshiftcheck);
+   builder->get_widget("movespeedselect",movespeedselect);
+   builder->get_widget("classcheckbutton0",classcheckbutton0);
+   builder->get_widget("classcheckbutton2",classcheckbutton2);
+   builder->get_widget("classcheckbutton3",classcheckbutton3);
+   builder->get_widget("classcheckbutton4",classcheckbutton4);
+   builder->get_widget("classcheckbutton5",classcheckbutton5);
+   builder->get_widget("classcheckbutton6",classcheckbutton6);
+   builder->get_widget("classcheckbutton7",classcheckbutton7);
+   builder->get_widget("classcheckbutton8",classcheckbutton8);
+   builder->get_widget("classcheckbutton9",classcheckbutton9);
+   builder->get_widget("classcheckbutton12",classcheckbutton12);
+   builder->get_widget("classcheckbuttonA",classcheckbuttonA);
+   builder->get_widget("heightmaxselect",heightmaxselect);
+   builder->get_widget("heightminselect",heightminselect);
+   builder->get_widget("heightscrollbar",heightscrollbar);
+   builder->get_widget("heightoffsetselect",heightoffsetselect);
+   builder->get_widget("heightfloorselect",heightfloorselect);
+   builder->get_widget("intensitymaxselect",intensitymaxselect);
+   builder->get_widget("intensityminselect",intensityminselect);
+   builder->get_widget("intensityscrollbar",intensityscrollbar);
+   builder->get_widget("intensityoffsetselect",intensityoffsetselect);
+   builder->get_widget("intensityfloorselect",intensityfloorselect);
+   builder->get_widget("drawingresetbutton",drawingresetbutton);
+   builder->get_widget("maindetailselect",maindetailselect);
+   builder->get_widget("maindetailselectprof",maindetailselectprof);
+   builder->get_widget("previewdetailselectprof",previewdetailselectprof);
+   builder->get_widget("profdisplaynoise", profdisplaynoise);
+   builder->get_widget("tdodisplaynoise", tdodisplaynoise);
+   builder->get_widget("fullrefreshonpanning", fullrefreshonpanning);
+   builder->get_widget("backgroundcolorbutton", backgroundcolorbutton);
 }
 
 /*
@@ -135,36 +135,36 @@ void AdvancedOptionsWindow::load_xml(const Glib::RefPtr<Gtk::Builder>& builder)
 */
 void AdvancedOptionsWindow::connect_signals()
 {
-	advancedoptionsdialog->signal_response().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_advancedoptionsdialog_response));
-	classcheckbutton0->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_classcheckbutton0_toggled));
-	classcheckbutton2->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_classcheckbutton2_toggled));
-	classcheckbutton3->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_classcheckbutton3_toggled));
-	classcheckbutton4->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_classcheckbutton4_toggled));
-	classcheckbutton5->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_classcheckbutton5_toggled));
-	classcheckbutton6->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_classcheckbutton6_toggled));
-	classcheckbutton7->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_classcheckbutton7_toggled));
-	classcheckbutton8->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_classcheckbutton8_toggled));
-	classcheckbutton9->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_classcheckbutton9_toggled));
-	classcheckbutton12->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_classcheckbutton12_toggled));
-	classcheckbuttonA->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_classcheckbuttonA_toggled));
-	heightmaxconn = heightmaxselect->signal_value_changed().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_heightmaxselect_changed));
-	heightminconn = heightminselect->signal_value_changed().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_heightminselect_changed));
-	heightscrollbar->signal_change_value().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_heightscrollbar_scrolled));
-	heightoffsetselect->signal_value_changed().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_heightoffsetselect_changed));
-	heightfloorselect->signal_value_changed().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_heightfloorselect_changed));
-	intensitymaxconn = intensitymaxselect->signal_value_changed().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_intensitymaxselect_changed));
-	intensityminconn = intensityminselect->signal_value_changed().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_intensityminselect_changed));
-	intensityscrollbar->signal_change_value().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_intensityscrollbar_scrolled));
-	intensityoffsetselect->signal_value_changed().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_intensityoffsetselect_changed));
-	intensityfloorselect->signal_value_changed().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_intensityfloorselect_changed));
-	drawingresetbutton->signal_clicked().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_drawingresetbutton_clicked));
-	maindetailselect->signal_value_changed().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_maindetailselected));
-	maindetailselectprof->signal_value_changed().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_maindetailselectedprof));
-	previewdetailselectprof->signal_value_changed().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_previewdetailselectedprof));
-	profdisplaynoise->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_profile_noise_toggle));
-	tdodisplaynoise->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_tdo_noise_toggle));
-	fullrefreshonpanning->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_fullrefresh_toggled));
-	backgroundcolorbutton->signal_color_set().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_backgroundcolor_changed));
+   advancedoptionsdialog->signal_response().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_advancedoptionsdialog_response));
+   classcheckbutton0->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_classcheckbutton0_toggled));
+   classcheckbutton2->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_classcheckbutton2_toggled));
+   classcheckbutton3->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_classcheckbutton3_toggled));
+   classcheckbutton4->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_classcheckbutton4_toggled));
+   classcheckbutton5->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_classcheckbutton5_toggled));
+   classcheckbutton6->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_classcheckbutton6_toggled));
+   classcheckbutton7->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_classcheckbutton7_toggled));
+   classcheckbutton8->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_classcheckbutton8_toggled));
+   classcheckbutton9->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_classcheckbutton9_toggled));
+   classcheckbutton12->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_classcheckbutton12_toggled));
+   classcheckbuttonA->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_classcheckbuttonA_toggled));
+   heightmaxconn = heightmaxselect->signal_value_changed().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_heightmaxselect_changed));
+   heightminconn = heightminselect->signal_value_changed().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_heightminselect_changed));
+   heightscrollbar->signal_change_value().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_heightscrollbar_scrolled));
+   heightoffsetselect->signal_value_changed().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_heightoffsetselect_changed));
+   heightfloorselect->signal_value_changed().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_heightfloorselect_changed));
+   intensitymaxconn = intensitymaxselect->signal_value_changed().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_intensitymaxselect_changed));
+   intensityminconn = intensityminselect->signal_value_changed().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_intensityminselect_changed));
+   intensityscrollbar->signal_change_value().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_intensityscrollbar_scrolled));
+   intensityoffsetselect->signal_value_changed().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_intensityoffsetselect_changed));
+   intensityfloorselect->signal_value_changed().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_intensityfloorselect_changed));
+   drawingresetbutton->signal_clicked().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_drawingresetbutton_clicked));
+   maindetailselect->signal_value_changed().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_maindetailselected));
+   maindetailselectprof->signal_value_changed().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_maindetailselectedprof));
+   previewdetailselectprof->signal_value_changed().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_previewdetailselectedprof));
+   profdisplaynoise->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_profile_noise_toggle));
+   tdodisplaynoise->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_tdo_noise_toggle));
+   fullrefreshonpanning->signal_toggled().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_fullrefresh_toggled));
+   backgroundcolorbutton->signal_color_set().connect(sigc::mem_fun(*this,&AdvancedOptionsWindow::on_backgroundcolor_changed));
 }
 
 /*
@@ -182,10 +182,10 @@ void AdvancedOptionsWindow::on_advancedoptionsdialog_response(int response_id)
 
 void AdvancedOptionsWindow::on_fullrefresh_toggled()
 {
-	if(fullrefreshonpanning->get_active())
-		tdo->set_panning_refresh(1);
-	else
-		tdo->set_panning_refresh(2);
+   if(fullrefreshonpanning->get_active())
+      tdo->set_panning_refresh(1);
+   else
+      tdo->set_panning_refresh(2);
 }
 
 void AdvancedOptionsWindow::on_classcheckbutton0_toggled()
@@ -416,7 +416,7 @@ bool AdvancedOptionsWindow::on_intensityscrollbar_scrolled(Gtk::ScrollType scrol
 
    if(new_value + intensityscrollbar->get_adjustment()->get_page_size() > intensityscrollbar->get_adjustment()->get_upper())
    {
-	  // New upper value (new_value plus page size) must not exceed the maximum
+     // New upper value (new_value plus page size) must not exceed the maximum
       // possible value, otherwise it might mess things up when used to set the 
       // ranges, below.
       new_value = intensityscrollbar->get_adjustment()->get_upper() - intensityscrollbar->get_adjustment()->get_page_size();
@@ -544,22 +544,23 @@ void AdvancedOptionsWindow::on_previewdetailselectedprof()
 */
 void AdvancedOptionsWindow::on_backgroundcolor_changed()
 {
-	Gdk::Color c = backgroundcolorbutton->get_color();
-	float red = (float)c.get_red() / 65535.0;
-	float green = (float)c.get_green() / 65535.0;
-	float blue = (float)c.get_blue() / 65535.0;
-	float alpha = (float)backgroundcolorbutton->get_alpha() / 65535.0;
-	tdo->set_background_colour(red, green, blue, alpha);
-	prof->set_background_colour(red, green, blue, alpha);
+   Gdk::Color c = backgroundcolorbutton->get_color();
+   float red = (float)c.get_red() / 65535.0;
+   float green = (float)c.get_green() / 65535.0;
+   float blue = (float)c.get_blue() / 65535.0;
+   float alpha = (float)backgroundcolorbutton->get_alpha() / 65535.0;
+   tdo->set_background_colour(red, green, blue, alpha);
+   prof->set_background_colour(red, green, blue, alpha);
 
-	if (tdo->get_realized())
-	{
-		tdo->update_background_colour();
-		tdo->drawviewable(1);
-	}
-	if (prof->get_realized())
-	{
-		prof->update_background_colour();
-		prof->drawviewable(1);
-	}
+   if (tdo->get_realized())
+   {
+      tdo->update_background_colour();
+      tdo->drawviewable(1);
+   }
+   if (prof->get_realized())
+   {
+      prof->update_background_colour();
+      prof->drawviewable(1);
+   }
 }
+

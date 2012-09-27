@@ -192,7 +192,7 @@ public:
    
    Quadtree* getlidatdata()
    {
-	   return this->lidardata;
+      return this->lidardata;
    }
 
    void setColourBy(colourBy_t colour)
@@ -397,3 +397,4 @@ protected:
    bool GL_data_impede;
 };
 #endif
+

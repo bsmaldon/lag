@@ -31,7 +31,7 @@
  */
 
 #ifndef _CACHEMINDER_H
-#define	_CACHEMINDER_H
+#define   _CACHEMINDER_H
 
 #include "PointBucket.h"
 #include <queue>
@@ -121,7 +121,7 @@ public:
 
     int get_cacheused()
     {
-    	return this->cacheUsed_;
+       return this->cacheUsed_;
     }
 
 protected:
@@ -131,5 +131,6 @@ protected:
     bool cacheing_;
 };
 
-#endif	/* _CACHEMINDER_H */
+#endif   /* _CACHEMINDER_H */
+
 

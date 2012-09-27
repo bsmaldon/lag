@@ -41,27 +41,27 @@ Point::Point()
 // 1D Point
 Point::Point(double x)
 :
-	x_	(x),
-	y_	(0),
-	z_	(0)
+   x_   (x),
+   y_   (0),
+   z_   (0)
 {
 }
 
 // 2D Point
 Point::Point(double x, double y)
 :
-	x_	(x),
-	y_	(y),
-	z_	(0)
+   x_   (x),
+   y_   (y),
+   z_   (0)
 {
 }
 
 // 3D Point
 Point::Point(double x, double y, double z)
 :
-	x_	(x),
-	y_	(y),
-	z_	(z)
+   x_   (x),
+   y_   (y),
+   z_   (z)
 {
 }
 
@@ -75,15 +75,15 @@ double Point::distanceTo(const Point& other)
 
 bool operator==(Point& lhs, Point& rhs)
 {
-	return lhs.x_ == rhs.x_ && lhs.y_ == rhs.y_ && lhs.z_ == rhs.z_;
+   return lhs.x_ == rhs.x_ && lhs.y_ == rhs.y_ && lhs.z_ == rhs.z_;
 }
 
 bool operator!=(Point& lhs, Point& rhs)
 {
-	if (lhs == rhs)
-		return false;
-	else
-		return true;
+   if (lhs == rhs)
+      return false;
+   else
+      return true;
 }
 
 // Mutator methods for the Point
@@ -116,3 +116,4 @@ const Point Point::operator-(Point& other) const
       y_ - other.getY(),
       z_ - other.getZ() );
 }
+

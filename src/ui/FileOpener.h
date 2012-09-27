@@ -69,76 +69,76 @@ public:
 
    void set_lidardata(Quadtree* lidardata)
    {
-	   Glib::Mutex::Lock lock (mutex);
-	   this->lidardata=lidardata;
+      Glib::Mutex::Lock lock (mutex);
+      this->lidardata=lidardata;
    }
 
    Quadtree* get_lidardata()
    {
-	   Glib::Mutex::Lock lock (mutex);
-	   return this->lidardata;
+      Glib::Mutex::Lock lock (mutex);
+      return this->lidardata;
    }
 
    void delete_lidardata()
    {
-	   Glib::Mutex::Lock lock (mutex);
-	   if (lidardata != NULL)
-		   delete lidardata;
-	   lidardata = NULL;
+      Glib::Mutex::Lock lock (mutex);
+      if (lidardata != NULL)
+         delete lidardata;
+      lidardata = NULL;
    }
 
    void set_newQuadtree(bool newqt)
    {
-	   Glib::Mutex::Lock lock (mutex);
-	   this->newQuadtree = newqt;
+      Glib::Mutex::Lock lock (mutex);
+      this->newQuadtree = newqt;
    }
 
    void set_loadedanyfiles(bool loaded)
    {
-	   Glib::Mutex::Lock lock (mutex);
-	   this->loadedanyfiles = loaded;
+      Glib::Mutex::Lock lock (mutex);
+      this->loadedanyfiles = loaded;
    }
 
    bool get_loadedanyfiles()
    {
-	   Glib::Mutex::Lock lock (mutex);
-	   return this->loadedanyfiles;
+      Glib::Mutex::Lock lock (mutex);
+      return this->loadedanyfiles;
    }
 
    void set_thread_message(std::string message)
    {
-	   // Glib::Mutex::Lock lock (mutex);
-	   this->thread_message = message;
+      // Glib::Mutex::Lock lock (mutex);
+      this->thread_message = message;
    }
 
    void set_minZ(double z)
    {
-	   Glib::Mutex::Lock lock (mutex);
-	   this->minZ = z;
+      Glib::Mutex::Lock lock (mutex);
+      this->minZ = z;
    }
 
    double get_minZ()
    {
-	   Glib::Mutex::Lock lock (mutex);
-	   return this->minZ;
+      Glib::Mutex::Lock lock (mutex);
+      return this->minZ;
    }
 
    void set_maxZ(double z)
    {
-	   Glib::Mutex::Lock lock (mutex);
-   	   this->maxZ = z;
+      Glib::Mutex::Lock lock (mutex);
+         this->maxZ = z;
    }
 
    double get_maxZ()
    {
-   	   Glib::Mutex::Lock lock (mutex);
-   	   return this->maxZ;
+         Glib::Mutex::Lock lock (mutex);
+         return this->maxZ;
    }
 
    void set_utm_zone(std::string zone)
    {
-	   Glib::Mutex::Lock lock (mutex);
-	   this->utm_zone = zone;
+      Glib::Mutex::Lock lock (mutex);
+      this->utm_zone = zone;
    }
 
    double minZ, maxZ;
@@ -256,3 +256,4 @@ private:
 };
 
 #endif
+

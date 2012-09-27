@@ -44,16 +44,17 @@ class Profile;
 class ProfileWorker : public Worker
 {
 public:
-	ProfileWorker(Profile* prof, std::vector<double> xs, std::vector<double> ys, int ps);
+   ProfileWorker(Profile* prof, std::vector<double> xs, std::vector<double> ys, int ps);
 
 protected:
-	void run();
+   void run();
 
-	Profile* profile;
-	std::vector<double> profxs;
-	std::vector<double> profys;
-	int profps;
+   Profile* profile;
+   std::vector<double> profxs;
+   std::vector<double> profys;
+   int profps;
 };
 
 
 #endif /* PROFILEWORKER_H_ */
+

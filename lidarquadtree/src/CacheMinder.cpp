@@ -38,9 +38,9 @@
 
 CacheMinder::CacheMinder(int cacheSize)
 :
-	cacheUsed_	(0),
-	totalCache_	(cacheSize),
-	cacheing_	(false)
+   cacheUsed_  (0),
+   totalCache_ (cacheSize),
+   cacheing_   (false)
 {
 }
 
@@ -109,7 +109,7 @@ bool CacheMinder::updateCache(int requestSize, PointBucket *pointBucket, bool fo
 
 void CacheMinder::releaseCache(int releaseSize, PointBucket *bucketToRemove)
 {
-	// remove the pointbucket from the cache que and update available cache
+   // remove the pointbucket from the cache que and update available cache
    deque<PointBucket*>::iterator ity;
    for (ity = bucketsInCache_.begin(); ity <= bucketsInCache_.end(); ++ity)
    {
@@ -127,3 +127,4 @@ void CacheMinder::releaseCache(int releaseSize, PointBucket *bucketToRemove)
 CacheMinder::~CacheMinder()
 {
 }
+

@@ -164,13 +164,13 @@ std::vector<double> SelectionBox::getYs()
 */
 double SelectionBox::get_min_x()
 {
-	double x = points[0].getX();
-	for (int i = 1; i < 4; ++i)
-	{
-		if (points[i].getX() < x)
-			x = points[i].getX();
-	}
-	return x;
+   double x = points[0].getX();
+   for (int i = 1; i < 4; ++i)
+   {
+      if (points[i].getX() < x)
+         x = points[i].getX();
+   }
+   return x;
 }
 
 /*
@@ -180,13 +180,13 @@ double SelectionBox::get_min_x()
 */
 double SelectionBox::get_max_x()
 {
-	double x = points[0].getX();
-	for (int i = 1; i < 4; ++i)
-	{
-		if (points[i].getX() > x)
-			x = points[i].getX();
-	}
-	return x;
+   double x = points[0].getX();
+   for (int i = 1; i < 4; ++i)
+   {
+      if (points[i].getX() > x)
+         x = points[i].getX();
+   }
+   return x;
 }
 
 /*
@@ -196,13 +196,13 @@ double SelectionBox::get_max_x()
 */
 double SelectionBox::get_min_y()
 {
-	double y = points[0].getY();
-	for (int i = 1; i < 4; ++i)
-	{
-		if (points[i].getY() < y)
-			y = points[i].getY();
-	}
-	return y;
+   double y = points[0].getY();
+   for (int i = 1; i < 4; ++i)
+   {
+      if (points[i].getY() < y)
+         y = points[i].getY();
+   }
+   return y;
 }
 
 /*
@@ -212,11 +212,12 @@ double SelectionBox::get_min_y()
 */
 double SelectionBox::get_max_y()
 {
-	double y = points[0].getY();
-	for (int i = 1; i < 4; ++i)
-	{
-		if (points[i].getY() > y)
-			y = points[i].getY();
-	}
-	return y;
+   double y = points[0].getY();
+   for (int i = 1; i < 4; ++i)
+   {
+      if (points[i].getY() > y)
+         y = points[i].getY();
+   }
+   return y;
 }
+

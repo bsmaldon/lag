@@ -31,7 +31,7 @@
  */
 
 #ifndef _QUADTREE_H
-#define	_QUADTREE_H
+#define   _QUADTREE_H
 
 #include <vector>
 #include <sstream>
@@ -69,8 +69,8 @@ typedef tr1::unordered_map<uint8_t, string> flighthash;
 class Quadtree
 {
 public:
-	Quadtree()
-	{}
+   Quadtree()
+   {}
 
     /**
      * a constructor that builds a new quadtree with user defined dimensions
@@ -235,12 +235,12 @@ public:
 
     int get_capacity()
     {
-    	return this->capacity_;
+       return this->capacity_;
     }
 
     int getFlightlinesNumber()
     {
-    	return this->flightLineNumber_;
+       return this->flightLineNumber_;
     }
 
 protected:
@@ -294,5 +294,6 @@ private:
 
 
 
-#endif	/* _QUADTREE_H */
+#endif   /* _QUADTREE_H */
+
 

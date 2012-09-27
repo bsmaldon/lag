@@ -36,7 +36,7 @@
 ==================================
 */
 ClassifyWorker::ClassifyWorker(Profile* prof) : Worker(),
-		profile  (prof),
+      profile  (prof),
       stopFlag (false)
 {
    // dummy point
@@ -125,3 +125,4 @@ void ClassifyWorker::run()
       }
    }
 }
+

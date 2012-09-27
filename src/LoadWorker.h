@@ -53,56 +53,57 @@ class LASreader;
 class LoadWorker: public Worker
 {
 public:
-	LoadWorker(FileOpener* fo, int point_offset,
-			std::vector<std::string> filenames, bool s, bool usearea,
-			int resolutiondepth, int resolutionbase, int bucketlevels,
-			int bucketlimit, int cachelimit, bool default_scale_factors,
-			double scale_factor[3], std::string ascii_code, SelectionBox fence,
-			PointFilter pf, std::string cache_path);
+   LoadWorker(FileOpener* fo, int point_offset,
+         std::vector<std::string> filenames, bool s, bool usearea,
+         int resolutiondepth, int resolutionbase, int bucketlevels,
+         int bucketlimit, int cachelimit, bool default_scale_factors,
+         double scale_factor[3], std::string ascii_code, SelectionBox fence,
+         PointFilter pf, std::string cache_path);
 
-	void stop();
+   void stop();
 
-	Glib::Dispatcher sig_message;		// Signals the GUI to display a message
-	Glib::Dispatcher sig_file_loaded;	// Signals that a file has been loaded
-	Glib::Dispatcher sig_fail;			// Signals failure
-	Glib::Dispatcher sig_progress;      // Signals that 1% of the loading has completed
+   Glib::Dispatcher sig_message;      // Signals the GUI to display a message
+   Glib::Dispatcher sig_file_loaded;   // Signals that a file has been loaded
+   Glib::Dispatcher sig_fail;         // Signals failure
+   Glib::Dispatcher sig_progress;      // Signals that 1% of the loading has completed
 
-	// This stores location of PointData files with 1.3 point attributes
-	static std::tr1::unordered_map<uint8_t, std::string> point_data_paths;
-	static std::vector<int> point_number;
+   // This stores location of PointData files with 1.3 point attributes
+   static std::tr1::unordered_map<uint8_t, std::string> point_data_paths;
+   static std::vector<int> point_number;
 
 protected:
-	void run();
-	void send_message(std::string message);
-	Boundary get_boundary();
-	int load_points(Quadtree* qt);
-	int load_points_wf(Quadtree* qt);
+   void run();
+   void send_message(std::string message);
+   Boundary get_boundary();
+   int load_points(Quadtree* qt);
+   int load_points_wf(Quadtree* qt);
 
-	void convert_projection();
-	std::string get_utm_zone();
+   void convert_projection();
+   std::string get_utm_zone();
 
-	FileOpener* fileopener;
-	int point_offset;
-	std::vector<std::string> filenames;
-	bool create_new_quadtree;
-	bool usearea;
-	int resolutiondepth;
-	int resolutionbase;
-	int bucketLevels;
-	int bucketlimit;
-	int cachelimit;
-	bool use_default_scale_factors;
-	double scale_factor[3];
-	std::string ascii_code;
-	SelectionBox fence;
-	PointFilter point_filter;
-	std::string cache_path;
+   FileOpener* fileopener;
+   int point_offset;
+   std::vector<std::string> filenames;
+   bool create_new_quadtree;
+   bool usearea;
+   int resolutiondepth;
+   int resolutionbase;
+   int bucketLevels;
+   int bucketlimit;
+   int cachelimit;
+   bool use_default_scale_factors;
+   double scale_factor[3];
+   std::string ascii_code;
+   SelectionBox fence;
+   PointFilter point_filter;
+   std::string cache_path;
 
-	bool latlong;
-	GeoProjectionConverter gpc;
-	LASquantizer* reproject_quantizer;
-	LASquantizer* saved_quantizer;
-	LASreader* reader;
+   bool latlong;
+   GeoProjectionConverter gpc;
+   LASquantizer* reproject_quantizer;
+   LASquantizer* saved_quantizer;
+   LASreader* reader;
 };
 
 #endif /* LOADWORKER_H_ */
+

@@ -58,19 +58,19 @@ PointBucket::PointBucket(int capacity, double minX, double minY, double maxX,
                          string instancedirectory,
                          int resolutionBase, int numberOfResolutionLevels)
 :
-        minIntensity_		(USHRT_MAX),
-        maxIntensity_		(0),
-        minZ_				(DBL_MAX),
-        maxZ_				(DBL_MIN),
-        minX_				(minX),
-        maxX_				(maxX),
-        minY_				(minY),
-        maxY_				(maxY),
-        MCP_				(MCP),
-        resolutionBase_		(resolutionBase),
-        numberOfResolutionLevels_ (numberOfResolutionLevels),
-        capacity_			(capacity),
-        instanceDirectory_	(instancedirectory)
+        minIntensity_   (USHRT_MAX),
+        maxIntensity_   (0),
+        minZ_           (DBL_MAX),
+        maxZ_           (DBL_MIN),
+        minX_           (minX),
+        maxX_           (maxX),
+        minY_           (minY),
+        maxY_           (maxY),
+        MCP_            (MCP),
+        resolutionBase_             (resolutionBase),
+        numberOfResolutionLevels_   (numberOfResolutionLevels),
+        capacity_                   (capacity),
+        instanceDirectory_          (instancedirectory)
 
 
 
@@ -140,18 +140,18 @@ PointBucket::PointBucket(int capacity, double minX, double minY, double maxX,
 
    for (int k = 0; k < numberOfResolutionLevels; ++k)
    {
-	   pointInterval_[k] = int(pow(resolutionBase_, k));
-	   pointArraySize_[k] = capacity_ / pointInterval_[k];
-	   numberOfPoints_[k] = 0;
-	   numberOfSerializedPoints_[k] = 0;
-	   serialized_[k] = false;
-	   incache_[k] = false;
-	   updated_[k] = false;
-	   compressedDataSize_[k] = 0;
-	   points_[k] = NULL;
+      pointInterval_[k] = int(pow(resolutionBase_, k));
+      pointArraySize_[k] = capacity_ / pointInterval_[k];
+      numberOfPoints_[k] = 0;
+      numberOfSerializedPoints_[k] = 0;
+      serialized_[k] = false;
+      incache_[k] = false;
+      updated_[k] = false;
+      compressedDataSize_[k] = 0;
+      points_[k] = NULL;
 
       snprintf(buffer, 16, "%d", pointInterval_[k]);
-	   filePath_[k] = instanceDirectory_ +
+      filePath_[k] = instanceDirectory_ +
          resolution_string + buffer;
    }
 
@@ -178,7 +178,7 @@ PointBucket::~PointBucket()
    {
       if (serialized_[k])
       {
-    	  remove(filePath_[k].c_str());
+         remove(filePath_[k].c_str());
       }
 
       // if the bucket is allocated memory this is freed
@@ -351,36 +351,36 @@ LidarPoint& PointBucket::getPoint(int i, int resolution)
 
 void PointBucket::setPoint(LidarPoint& newPoint)
 {
-	if (!incache_[0])
-		cache(true, 0);
+   if (!incache_[0])
+      cache(true, 0);
 
-	// Update max/min intensity/Z values for the bucket.
-	if (newPoint.getIntensity() > maxIntensity_)
-		maxIntensity_ = newPoint.getIntensity();
-	else if (newPoint.getIntensity() < minIntensity_)
-		minIntensity_ = newPoint.getIntensity();
+   // Update max/min intensity/Z values for the bucket.
+   if (newPoint.getIntensity() > maxIntensity_)
+      maxIntensity_ = newPoint.getIntensity();
+   else if (newPoint.getIntensity() < minIntensity_)
+      minIntensity_ = newPoint.getIntensity();
 
-	if (newPoint.getZ() > maxZ_)
-		maxZ_ = newPoint.getZ();
-	else if (newPoint.getZ() < minZ_)
-		minZ_ = newPoint.getZ();
+   if (newPoint.getZ() > maxZ_)
+      maxZ_ = newPoint.getZ();
+   else if (newPoint.getZ() < minZ_)
+      minZ_ = newPoint.getZ();
 
-	// Insert into the main bucket then check if it falls into the subbuckets
-	points_[0][numberOfPoints_[0]] = newPoint;
-	numberOfPoints_[0]++;
+   // Insert into the main bucket then check if it falls into the subbuckets
+   points_[0][numberOfPoints_[0]] = newPoint;
+   numberOfPoints_[0]++;
 
-	//for each sub bucket
-	for (int k = 1; k < numberOfResolutionLevels_; ++k)
-	{
-		if ((numberOfPoints_[0] % pointInterval_[k] == 0))
-		{
-			if (!incache_[k])
-				cache(true, k);
+   //for each sub bucket
+   for (int k = 1; k < numberOfResolutionLevels_; ++k)
+   {
+      if ((numberOfPoints_[0] % pointInterval_[k] == 0))
+      {
+         if (!incache_[k])
+            cache(true, k);
 
-			points_[k][numberOfPoints_[k]] = newPoint;
-			numberOfPoints_[k]++;
-		}
-	}
+         points_[k][numberOfPoints_[k]] = newPoint;
+         numberOfPoints_[k]++;
+      }
+   }
 }
 
 void PointBucket::setClassification(int i, uint8_t classification)
@@ -409,8 +409,9 @@ void PointBucket::setClassification(int i, uint8_t classification)
 
 int PointBucket::get_cache_used()
 {
-    	return MCP_->get_cacheused();
+       return MCP_->get_cacheused();
 }
+
 
 
 

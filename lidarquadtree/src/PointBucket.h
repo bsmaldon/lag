@@ -31,7 +31,7 @@
  */
 
 #ifndef _POINTBUCKET_H
-#define	_POINTBUCKET_H
+#define   _POINTBUCKET_H
 
 #include "LidarPoint.h"
 #include <stdint.h>
@@ -202,16 +202,16 @@ public:
 
     static void clean_up()
     {
-    	if (workingMemory != NULL)
-    	{
-    		free(workingMemory);
-    		workingMemory = NULL;
-    	}
-    	if (compressedData != NULL)
-    	{
-    		free(compressedData);
-    		compressedData = NULL;
-    	}
+       if (workingMemory != NULL)
+       {
+          free(workingMemory);
+          workingMemory = NULL;
+       }
+       if (compressedData != NULL)
+       {
+          free(compressedData);
+          compressedData = NULL;
+       }
     }
     
     int get_cache_used();
@@ -288,5 +288,6 @@ protected:
 };
 
 
-#endif	/* _POINTBUCKET_H */
+#endif   /* _POINTBUCKET_H */
+
 

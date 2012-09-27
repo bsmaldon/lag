@@ -34,16 +34,16 @@
 ==================================
 */
 TwoDeeOverviewWindow::TwoDeeOverviewWindow(TwoDeeOverview *tdo, AdvancedOptionsWindow *aow, FileSaver *fs, Gtk::Window *tdowin,
-		Gtk::Window *profilewindow, const Glib::RefPtr<Gtk::Builder>& builder, Gtk::EventBox *eventboxtdo, ProfileWindow *profwin)
+      Gtk::Window *profilewindow, const Glib::RefPtr<Gtk::Builder>& builder, Gtk::EventBox *eventboxtdo, ProfileWindow *profwin)
 :
-		tdo				(tdo),
-		profwin			(profwin),
-		eventboxtdo		(eventboxtdo),
-		tdowin			(tdowin),
-		profilewindow 	(profilewindow),
-		aow				(aow),
-		fs				(fs),
-		drawwhentoggled	(true)
+      tdo               (tdo),
+      profwin           (profwin),
+      eventboxtdo       (eventboxtdo),
+      tdowin            (tdowin),
+      profilewindow     (profilewindow),
+      aow               (aow),
+      fs                (fs),
+      drawwhentoggled   (true)
 {
    load_xml(builder);
 
@@ -71,9 +71,9 @@ TwoDeeOverviewWindow::TwoDeeOverviewWindow(TwoDeeOverview *tdo, AdvancedOptionsW
    // legend and nothing happens because of there being no legend when
    // colouring by flightline or by none.
    showlegendcheck->set_inconsistent(!colourbyintensitymenu->get_active() &&
-		   	   	   	   	   	   	   	 !colourbyheightmenu->get_active() &&
-		   	   	   	   	   	   	   	 !colourbyclassificationmenu->get_active() &&
-		   	   	   	   	   	   	   	 !colourbyreturnmenu->get_active());
+                                                 !colourbyheightmenu->get_active() &&
+                                                 !colourbyclassificationmenu->get_active() &&
+                                                 !colourbyreturnmenu->get_active());
 }
 
 /*
@@ -137,42 +137,42 @@ TwoDeeOverviewWindow::~TwoDeeOverviewWindow()
 */
 void TwoDeeOverviewWindow::load_xml(const Glib::RefPtr<Gtk::Builder>& builder)
 {
-    builder->get_widget("saveasfilemenuitem",	 	saveasfilemenuitem);
-    builder->get_widget("quitfilemenuitem",	 		quitfilemenuitem);
-    builder->get_widget("showdistancescalecheck",	showdistancescalecheck);
-    builder->get_widget("showlegendcheck",	 		showlegendcheck);
-    builder->get_widget("reverseheightcheck", 		reverseheightcheck);
-    builder->get_widget("colourbynonemenu", 		colourbynonemenu);
-    builder->get_widget("colourbyintensitymenu", 	colourbyintensitymenu);
-    builder->get_widget("colourbyheightmenu",	 	colourbyheightmenu);
-    builder->get_widget("colourbyflightlinemenu", 	colourbyflightlinemenu);
+    builder->get_widget("saveasfilemenuitem",       saveasfilemenuitem);
+    builder->get_widget("quitfilemenuitem",          quitfilemenuitem);
+    builder->get_widget("showdistancescalecheck",   showdistancescalecheck);
+    builder->get_widget("showlegendcheck",          showlegendcheck);
+    builder->get_widget("reverseheightcheck",       reverseheightcheck);
+    builder->get_widget("colourbynonemenu",       colourbynonemenu);
+    builder->get_widget("colourbyintensitymenu",    colourbyintensitymenu);
+    builder->get_widget("colourbyheightmenu",       colourbyheightmenu);
+    builder->get_widget("colourbyflightlinemenu",    colourbyflightlinemenu);
     builder->get_widget("colourbyclassificationmenu", colourbyclassificationmenu);
-    builder->get_widget("colourbyreturnmenu", 		colourbyreturnmenu);
-    builder->get_widget("brightnessbynonemenu", 	brightnessbynonemenu);
+    builder->get_widget("colourbyreturnmenu",       colourbyreturnmenu);
+    builder->get_widget("brightnessbynonemenu",    brightnessbynonemenu);
     builder->get_widget("brightnessbyintensitymenu", brightnessbyintensitymenu);
-    builder->get_widget("brightnessbyheightmenu", 	brightnessbyheightmenu);
-    builder->get_widget("helpmenu", 				helpmenu);
-    builder->get_widget("help", 					help);
-    builder->get_widget("aboutmenu", 				aboutmenu);
-    builder->get_widget("about", 					about);
-    builder->get_widget("returnbutton", 			returnbutton);
-    builder->get_widget("advancedbutton", 			advancedbutton);
-    builder->get_widget("pointwidthselect",		 	pointwidthselect);
-    builder->get_widget("rulertoggleover", 			rulertoggleover);
-    builder->get_widget("fencetoggle", 				fencetoggle);
-    builder->get_widget("profiletoggle", 			profiletoggle);
-    builder->get_widget("slantedrectshapetoggle",	slantedrectshapetoggle);
-    builder->get_widget("slantwidthselect", 		slantwidthselect);
-    builder->get_widget("raiselinecheckmenu",		raiselinecheckmenu);
-    builder->get_widget("raiselineselect", 			raiselineselect);
-    builder->get_widget("superzoombutton",			superzoombutton);
-    builder->get_widget("refreshbutton",			refreshbutton);
-    builder->get_widget("saveasbutton", 			saveasbutton);
-    builder->get_widget("slicebutton", 				slicebutton);
-    builder->get_widget("zminselect", 				zminselect);
-    builder->get_widget("zmaxselect",  				zmaxselect);
-    builder->get_widget("quadtreemenu",				quadtreemenu);
-    builder->get_widget("uselatlongcheck",			uselatlongcheck);
+    builder->get_widget("brightnessbyheightmenu",    brightnessbyheightmenu);
+    builder->get_widget("helpmenu",             helpmenu);
+    builder->get_widget("help",                help);
+    builder->get_widget("aboutmenu",             aboutmenu);
+    builder->get_widget("about",                about);
+    builder->get_widget("returnbutton",          returnbutton);
+    builder->get_widget("advancedbutton",          advancedbutton);
+    builder->get_widget("pointwidthselect",          pointwidthselect);
+    builder->get_widget("rulertoggleover",          rulertoggleover);
+    builder->get_widget("fencetoggle",             fencetoggle);
+    builder->get_widget("profiletoggle",          profiletoggle);
+    builder->get_widget("slantedrectshapetoggle",   slantedrectshapetoggle);
+    builder->get_widget("slantwidthselect",       slantwidthselect);
+    builder->get_widget("raiselinecheckmenu",      raiselinecheckmenu);
+    builder->get_widget("raiselineselect",          raiselineselect);
+    builder->get_widget("superzoombutton",         superzoombutton);
+    builder->get_widget("refreshbutton",         refreshbutton);
+    builder->get_widget("saveasbutton",          saveasbutton);
+    builder->get_widget("slicebutton",             slicebutton);
+    builder->get_widget("zminselect",             zminselect);
+    builder->get_widget("zmaxselect",              zmaxselect);
+    builder->get_widget("quadtreemenu",            quadtreemenu);
+    builder->get_widget("uselatlongcheck",         uselatlongcheck);
 }
 
 /*
@@ -184,17 +184,17 @@ void TwoDeeOverviewWindow::load_xml(const Glib::RefPtr<Gtk::Builder>& builder)
 */
 void TwoDeeOverviewWindow::connect_signals()
 {
-	eventboxtdo->signal_key_press_event().connect(sigc::mem_fun(this,&TwoDeeOverviewWindow::on_tdo_key_press));
-	saveasfilemenuitem->signal_activate().connect(sigc::mem_fun(this,&TwoDeeOverviewWindow::on_savefilemenuactivated));
-	quitfilemenuitem->signal_activate().connect(sigc::ptr_fun(gtk_main_quit));
-	showdistancescalecheck->signal_activate().connect(sigc::mem_fun(this,&TwoDeeOverviewWindow::on_showdistancescalecheck));
-	showlegendcheck->signal_activate().connect(sigc::mem_fun(this,&TwoDeeOverviewWindow::on_showlegendcheck));
-	reverseheightcheck->signal_activate().connect(sigc::mem_fun(this,&TwoDeeOverviewWindow::on_reverseheightcheck));
-	colourbynonemenu->signal_activate().connect(sigc::mem_fun(this,&TwoDeeOverviewWindow::on_colouractivated));
-	colourbyintensitymenu->signal_activate().connect(sigc::mem_fun(this,&TwoDeeOverviewWindow::on_colouractivated));
-	colourbyheightmenu->signal_activate().connect(sigc::mem_fun(this,&TwoDeeOverviewWindow::on_colouractivated));
-	colourbyflightlinemenu->signal_activate().connect(sigc::mem_fun(this,&TwoDeeOverviewWindow::on_colouractivated));
-	colourbyclassificationmenu->signal_activate().connect(sigc::mem_fun(this,&TwoDeeOverviewWindow::on_colouractivated));
+   eventboxtdo->signal_key_press_event().connect(sigc::mem_fun(this,&TwoDeeOverviewWindow::on_tdo_key_press));
+   saveasfilemenuitem->signal_activate().connect(sigc::mem_fun(this,&TwoDeeOverviewWindow::on_savefilemenuactivated));
+   quitfilemenuitem->signal_activate().connect(sigc::ptr_fun(gtk_main_quit));
+   showdistancescalecheck->signal_activate().connect(sigc::mem_fun(this,&TwoDeeOverviewWindow::on_showdistancescalecheck));
+   showlegendcheck->signal_activate().connect(sigc::mem_fun(this,&TwoDeeOverviewWindow::on_showlegendcheck));
+   reverseheightcheck->signal_activate().connect(sigc::mem_fun(this,&TwoDeeOverviewWindow::on_reverseheightcheck));
+   colourbynonemenu->signal_activate().connect(sigc::mem_fun(this,&TwoDeeOverviewWindow::on_colouractivated));
+   colourbyintensitymenu->signal_activate().connect(sigc::mem_fun(this,&TwoDeeOverviewWindow::on_colouractivated));
+   colourbyheightmenu->signal_activate().connect(sigc::mem_fun(this,&TwoDeeOverviewWindow::on_colouractivated));
+   colourbyflightlinemenu->signal_activate().connect(sigc::mem_fun(this,&TwoDeeOverviewWindow::on_colouractivated));
+   colourbyclassificationmenu->signal_activate().connect(sigc::mem_fun(this,&TwoDeeOverviewWindow::on_colouractivated));
     colourbyreturnmenu->signal_activate().connect(sigc::mem_fun(this,&TwoDeeOverviewWindow::on_colouractivated));
     brightnessbynonemenu->signal_activate().connect(sigc::mem_fun(this,&TwoDeeOverviewWindow::on_brightnessactivated));
     brightnessbyintensitymenu->signal_activate().connect(sigc::mem_fun(this,&TwoDeeOverviewWindow::on_brightnessactivated));
@@ -233,7 +233,7 @@ void TwoDeeOverviewWindow::connect_signals()
 */
 void TwoDeeOverviewWindow::on_uselatlongcheck()
 {
-	tdo->set_latlong(uselatlongcheck->get_active());
+   tdo->set_latlong(uselatlongcheck->get_active());
 }
 
 /*
@@ -247,89 +247,89 @@ void TwoDeeOverviewWindow::on_uselatlongcheck()
 */
 void TwoDeeOverviewWindow::on_quadtreemenu_activated()
 {
-	Gtk::MessageDialog dialog("Quadtree information\t", false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_CLOSE);
-	std::ostringstream message;
-	Quadtree* qt;
-	qt = tdo->getlidatdata();
+   Gtk::MessageDialog dialog("Quadtree information\t", false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_CLOSE);
+   std::ostringstream message;
+   Quadtree* qt;
+   qt = tdo->getlidatdata();
 
-	if (qt == NULL)
-	{
-		message << "No quadtree found.";
-	}
-	else
-	{
-		Boundary* b;
-		b = qt->getBoundary();
-		vector<double> xs(4);
-		xs[0] = xs[1] = b->minX;
-		xs[2] = xs[3] = b->maxX;
-		vector<double> ys(4);
-		ys[0] = ys[1] = b->minY;
-		ys[2] = ys[3] = b->maxY;
-		vector<PointBucket*>* pointvector = NULL;
+   if (qt == NULL)
+   {
+      message << "No quadtree found.";
+   }
+   else
+   {
+      Boundary* b;
+      b = qt->getBoundary();
+      vector<double> xs(4);
+      xs[0] = xs[1] = b->minX;
+      xs[2] = xs[3] = b->maxX;
+      vector<double> ys(4);
+      ys[0] = ys[1] = b->minY;
+      ys[2] = ys[3] = b->maxY;
+      vector<PointBucket*>* pointvector = NULL;
 
-		try
-		{
-			pointvector = qt->advSubset(xs,ys,4);
-		}
-		catch(DescriptiveException& e)
-		{
-			cout << "There has been an exception:" << endl;
-			cout << "What: " << e.what() << endl;
-			cout << "Why: " << e.why() << endl;
-			cout << "No points returned." << endl;
-		}
+      try
+      {
+         pointvector = qt->advSubset(xs,ys,4);
+      }
+      catch(DescriptiveException& e)
+      {
+         cout << "There has been an exception:" << endl;
+         cout << "What: " << e.what() << endl;
+         cout << "Why: " << e.why() << endl;
+         cout << "No points returned." << endl;
+      }
 
-		if(pointvector == NULL || pointvector->size() == 0)
-		{
-			message << "No data found in the quandtree.";
-			delete b;
-		}
-		else
-		{
-			int pointsInBuckets = 0;
-			for (unsigned int i = 0; i < pointvector->size(); ++i)
-			{
-				pointsInBuckets +=(*pointvector)[i]->getNumberOfPoints(0);
-			}
+      if(pointvector == NULL || pointvector->size() == 0)
+      {
+         message << "No data found in the quandtree.";
+         delete b;
+      }
+      else
+      {
+         int pointsInBuckets = 0;
+         for (unsigned int i = 0; i < pointvector->size(); ++i)
+         {
+            pointsInBuckets +=(*pointvector)[i]->getNumberOfPoints(0);
+         }
 
-			double min[3];
-			double max[3];
-			min[0] = b->minX;
-			min[1] = b->minY;
-			min[2] = (*pointvector)[0]->getminZ();
-			max[0] = b->maxX;
-			max[1] = b->maxY;
-			max[2] = (*pointvector)[0]->getmaxZ();
+         double min[3];
+         double max[3];
+         min[0] = b->minX;
+         min[1] = b->minY;
+         min[2] = (*pointvector)[0]->getminZ();
+         max[0] = b->maxX;
+         max[1] = b->maxY;
+         max[2] = (*pointvector)[0]->getmaxZ();
 
-			delete b;
+         delete b;
 
-			if (uselatlongcheck->get_active())
-			{
-				tdo->convert_to_latlong(min);
-				tdo->convert_to_latlong(max);
-			}
+         if (uselatlongcheck->get_active())
+         {
+            tdo->convert_to_latlong(min);
+            tdo->convert_to_latlong(max);
+         }
 
-			message << "Number of points: " << "\t" << qt->getNumberOfPoints() << "\n"
-					<< "Points in buckets: " << "\t" << pointsInBuckets << "\n"
-					<< "Number of buckets:  " << pointvector->size() << "\n"
-					<< "Bucket size: " << "\t\t" << qt->get_capacity() << "\n"
-					<< "Points in cache: " << "\t" << (*pointvector)[0]->get_cache_used() << "\n"
-					<< "Size in memory: " << "\t" << (*pointvector)[0]->get_cache_used() * sizeof(LidarPoint) / 1048576 << " MB" << "\n"
-					<< "\n"
-					<< "Boundary:" << "\n"
-					<< "Min X - Max X: " << "\t" << min[0] << " - " << max[0] << "\n"
-					<< "Min Y - Max Y: " << "\t" << min[1] << " - " << max[1] << "\n"
-					<< "Min Z - Max Z: " << "\t" << min[2] << " - " << max[2] << "\n"
-					<< "\n"
-					<< "UTM zone: " << "\t" << tdo->get_utm_zone() << "\n";
-		}
+         message << "Number of points: " << "\t" << qt->getNumberOfPoints() << "\n"
+               << "Points in buckets: " << "\t" << pointsInBuckets << "\n"
+               << "Number of buckets:  " << pointvector->size() << "\n"
+               << "Bucket size: " << "\t\t" << qt->get_capacity() << "\n"
+               << "Points in cache: " << "\t" << (*pointvector)[0]->get_cache_used() << "\n"
+               << "Size in memory: " << "\t" << (*pointvector)[0]->get_cache_used() * sizeof(LidarPoint) / 1048576 << " MB" << "\n"
+               << "\n"
+               << "Boundary:" << "\n"
+               << "Min X - Max X: " << "\t" << min[0] << " - " << max[0] << "\n"
+               << "Min Y - Max Y: " << "\t" << min[1] << " - " << max[1] << "\n"
+               << "Min Z - Max Z: " << "\t" << min[2] << " - " << max[2] << "\n"
+               << "\n"
+               << "UTM zone: " << "\t" << tdo->get_utm_zone() << "\n";
+      }
 
-		delete pointvector;
-	}
+      delete pointvector;
+   }
 
-	dialog.set_secondary_text(message.str());
-	dialog.run();
+   dialog.set_secondary_text(message.str());
+   dialog.run();
 }
 
 /*
@@ -341,17 +341,17 @@ void TwoDeeOverviewWindow::on_quadtreemenu_activated()
 */
 void TwoDeeOverviewWindow::on_slicebuttontoggled()
 {
-	if (slicebutton->get_active())
-	{
-		tdo->set_slicing(true);
-		tdo->set_slice_minz(zminselect->get_value());
-		tdo->set_slice_maxz(zmaxselect->get_value());
-	}
-	else
-	{
-		tdo->set_slicing(false);
-	}
-	tdo->drawviewable(1);
+   if (slicebutton->get_active())
+   {
+      tdo->set_slicing(true);
+      tdo->set_slice_minz(zminselect->get_value());
+      tdo->set_slice_maxz(zmaxselect->get_value());
+   }
+   else
+   {
+      tdo->set_slicing(false);
+   }
+   tdo->drawviewable(1);
 }
 
 /*
@@ -361,11 +361,11 @@ void TwoDeeOverviewWindow::on_slicebuttontoggled()
 */
 void TwoDeeOverviewWindow::on_zminvaluechanged()
 {
-	if (slicebutton->get_active())
-	{
-		tdo->set_slice_minz(zminselect->get_value());
-		tdo->drawviewable(1);
-	}
+   if (slicebutton->get_active())
+   {
+      tdo->set_slice_minz(zminselect->get_value());
+      tdo->drawviewable(1);
+   }
 }
 
 /*
@@ -375,11 +375,11 @@ void TwoDeeOverviewWindow::on_zminvaluechanged()
 */
 void TwoDeeOverviewWindow::on_zmaxvaluechanged()
 {
-	if (slicebutton->get_active())
-	{
-		tdo->set_slice_maxz(zmaxselect->get_value());
-		tdo->drawviewable(1);
-	}
+   if (slicebutton->get_active())
+   {
+      tdo->set_slice_maxz(zmaxselect->get_value());
+      tdo->drawviewable(1);
+   }
 }
 
 /*
@@ -402,8 +402,8 @@ void TwoDeeOverviewWindow::set_slice_range(double min, double max)
 */
 void TwoDeeOverviewWindow::on_refreshbuttonclicked()
 {
-	if (tdo->get_realized())
-		tdo->drawviewable(1);
+   if (tdo->get_realized())
+      tdo->drawviewable(1);
 }
 
 /*
@@ -413,12 +413,12 @@ void TwoDeeOverviewWindow::on_refreshbuttonclicked()
 */
 void TwoDeeOverviewWindow::on_superzoomclicked()
 {
-	if (superzoombutton->get_active())
-		pointwidthselect->set_value(2.0);
-	else
-		pointwidthselect->set_value(1.0);
+   if (superzoombutton->get_active())
+      pointwidthselect->set_value(2.0);
+   else
+      pointwidthselect->set_value(1.0);
 
-	tdo->set_superzoom(superzoombutton->get_active());
+   tdo->set_superzoom(superzoombutton->get_active());
 }
 
 /*
@@ -491,9 +491,9 @@ void TwoDeeOverviewWindow::on_colouractivated()
    // legend and nothing happens because of there being no legend when 
    // colouring by flightline or by none.
    showlegendcheck->set_inconsistent(!colourbyintensitymenu->get_active() && 
-		   	   	   	   	   	   	   	 !colourbyheightmenu->get_active() &&
-		   	   	   	   	   	   	   	 !colourbyclassificationmenu->get_active() &&
-		   	   	   	   	   	   	   	 !colourbyreturnmenu->get_active());
+                                                 !colourbyheightmenu->get_active() &&
+                                                 !colourbyclassificationmenu->get_active() &&
+                                                 !colourbyreturnmenu->get_active());
 
    // As the signal handler is called twice (each time a radio button is 
    // toggle or untoggled, and toggling one automatically untoggles another), 
@@ -530,7 +530,7 @@ void TwoDeeOverviewWindow::on_brightnessactivated()
    // the time this handler is called.
    drawwhentoggled = !drawwhentoggled;
    if(tdo->is_realized()&&drawwhentoggled)
-	   tdo->drawviewable(1);
+      tdo->drawviewable(1);
 }
 
 /*
@@ -542,14 +542,14 @@ void TwoDeeOverviewWindow::on_brightnessactivated()
 */
 void TwoDeeOverviewWindow::on_returnbutton_clicked()
 {
-	pointwidthselect->set_value(1.0);
-	double zmin, zmax;
-	zminselect->get_range(zmin, zmax);
-	zminselect->set_value(zmin);
-	zmaxselect->set_value(zmax);
-	tdo->setpointwidth(pointwidthselect->get_value());
-	if(tdo->is_realized())
-		tdo->returntostart();
+   pointwidthselect->set_value(1.0);
+   double zmin, zmax;
+   zminselect->get_range(zmin, zmax);
+   zminselect->set_value(zmin);
+   zmaxselect->set_value(zmax);
+   tdo->setpointwidth(pointwidthselect->get_value());
+   if(tdo->is_realized())
+      tdo->returntostart();
 }
 
 /*
@@ -619,7 +619,7 @@ void TwoDeeOverviewWindow::on_fencetoggle()
    }
    else
    {
-   	tdo->unsetupfence();
+      tdo->unsetupfence();
       if(tdo->is_realized() &&
          !profiletoggle->get_active() &&
          !rulertoggleover->get_active() &&
@@ -647,11 +647,11 @@ void TwoDeeOverviewWindow::on_profiletoggle()
          rulertoggleover->set_active(false);
       tdo->setupprofile();
       if(tdo->is_realized())
-    	  tdo->drawviewable(2);
+         tdo->drawviewable(2);
    }
    else
    {
-   	tdo->unsetupprofile();
+      tdo->unsetupprofile();
       if(tdo->is_realized() &&
          !profilewindow->get_visible())
          profilewindow->show_all();
@@ -675,13 +675,13 @@ void TwoDeeOverviewWindow::on_profiletoggle()
 */
 void TwoDeeOverviewWindow::on_slantedrectshapetoggle()
 {
-	tdo->getprofbox()->setorthogonalshape(!slantedrectshapetoggle->get_active());
-	tdo->getfencebox()->setorthogonalshape(!slantedrectshapetoggle->get_active());
-	tdo->getprofbox()->setslantedshape(slantedrectshapetoggle->get_active());
-	tdo->getfencebox()->setslantedshape(slantedrectshapetoggle->get_active());
-	tdo->getprofbox()->makeboundaries();
-	tdo->getfencebox()->makeboundaries();
-	if(tdo->is_realized())tdo->drawviewable(2);
+   tdo->getprofbox()->setorthogonalshape(!slantedrectshapetoggle->get_active());
+   tdo->getfencebox()->setorthogonalshape(!slantedrectshapetoggle->get_active());
+   tdo->getprofbox()->setslantedshape(slantedrectshapetoggle->get_active());
+   tdo->getfencebox()->setslantedshape(slantedrectshapetoggle->get_active());
+   tdo->getprofbox()->makeboundaries();
+   tdo->getfencebox()->makeboundaries();
+   if(tdo->is_realized())tdo->drawviewable(2);
 }
 
 /*
@@ -924,7 +924,7 @@ void TwoDeeOverviewWindow::on_raiselinecheckmenu()
 */
 Gtk::Window* TwoDeeOverviewWindow::get_profilewindow()
 {
-	return profilewindow;
+   return profilewindow;
 }
 
 /*
@@ -934,9 +934,10 @@ Gtk::Window* TwoDeeOverviewWindow::get_profilewindow()
 */
 void TwoDeeOverviewWindow::set_utm_zone(std::string zone)
 {
-	tdo->set_utm_zone(zone);
-	if (zone == "" || zone == "unknown")
-		uselatlongcheck->set_inconsistent(true);
-	else
-		uselatlongcheck->set_inconsistent(false);
+   tdo->set_utm_zone(zone);
+   if (zone == "" || zone == "unknown")
+      uselatlongcheck->set_inconsistent(true);
+   else
+      uselatlongcheck->set_inconsistent(false);
 }
+

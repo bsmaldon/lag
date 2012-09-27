@@ -41,9 +41,9 @@ class LASreader;
 // Supported file types
 typedef enum
 {
-	LAS_FILE,
-	ASCII_FILE,
-	UNKNOWN_FILE
+   LAS_FILE,
+   ASCII_FILE,
+   UNKNOWN_FILE
 }  filetype_t;
 
 filetype_t test_filename(std::string const& filename);
@@ -53,3 +53,4 @@ char* convert_string(std::string const& str);
 
 
 #endif /* FILEUTILS_H_ */
+

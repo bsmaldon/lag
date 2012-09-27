@@ -29,7 +29,7 @@
  */
 
 #ifndef _QUADTREENODE_H
-#define	_QUADTREENODE_H
+#define   _QUADTREENODE_H
 
 #include "LidarPoint.h"
 #include "Boundary.h"
@@ -254,5 +254,6 @@ inline bool QuadtreeNode::isLeaf()
 }
 
 
-#endif	/* _QUADTREENODE_H */
+#endif   /* _QUADTREENODE_H */
+
 

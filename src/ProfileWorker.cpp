@@ -35,10 +35,10 @@
 ==================================
 */
 ProfileWorker::ProfileWorker(Profile* prof, vector<double> xs, vector<double> ys, int ps) : Worker(),
-		profile		(prof),
-		profxs		(xs),
-		profys		(ys),
-		profps		(ps)
+      profile  (prof),
+      profxs   (xs),
+      profys   (ys),
+      profps   (ps)
 {}
 
 /*
@@ -48,7 +48,8 @@ ProfileWorker::ProfileWorker(Profile* prof, vector<double> xs, vector<double> ys
 */
 void ProfileWorker::run()
 {
-	// Improve this
-	profile->loadprofile(profxs,profys,profps);
-	sig_done();
+   // Improve this
+   profile->loadprofile(profxs,profys,profps);
+   sig_done();
 }
+

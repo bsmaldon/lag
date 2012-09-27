@@ -211,7 +211,7 @@ public:
 
    void set_panning_refresh(int refreshType)
    {
-	   this->panningRefresh = refreshType;
+      this->panningRefresh = refreshType;
    }
 
    //Classification:
@@ -264,52 +264,52 @@ public:
 
    void set_slicing(bool slice)
    {
-	   this->slicing = slice;
+      this->slicing = slice;
    }
 
    bool get_slicing()
    {
-	   return this->slicing;
+      return this->slicing;
    }
 
    void set_slice_minz(double minz)
    {
-	   this->slice_minz = minz;
+      this->slice_minz = minz;
    }
 
    double get_slice_minz()
    {
-	   return this->slice_minz;
+      return this->slice_minz;
    }
 
    void set_slice_maxz(double maxz)
    {
-	   this->slice_maxz = maxz;
+      this->slice_maxz = maxz;
    }
 
    double get_slice_maxz()
    {
-	   return this->slice_maxz;
+      return this->slice_maxz;
    }
 
    bool get_latlong()
    {
-	   return this->latlong;
+      return this->latlong;
    }
 
    void set_latlong(bool uselatlong)
    {
-	   this->latlong = uselatlong;
+      this->latlong = uselatlong;
    }
 
    void set_utm_zone(std::string zone)
    {
-	   this->utm_zone = zone;
+      this->utm_zone = zone;
    }
 
    std::string get_utm_zone()
    {
-	   return this->utm_zone;
+      return this->utm_zone;
    }
 
    void convert_to_latlong(double* point);
@@ -564,3 +564,4 @@ protected:
 };
 
 #endif
+

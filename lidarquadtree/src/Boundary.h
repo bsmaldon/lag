@@ -42,5 +42,6 @@ public:
     double maxY;
 };
 
-#endif	/* _BOUNDARY_H */
+#endif   /* _BOUNDARY_H */
+
 

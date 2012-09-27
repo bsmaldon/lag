@@ -45,7 +45,7 @@ class Profile;
 class ClassifyWorker : public Worker
 {
 public:
-	ClassifyWorker(Profile* prof);
+   ClassifyWorker(Profile* prof);
    ~ClassifyWorker();
    void nudge();
    void stop();
@@ -53,10 +53,10 @@ public:
    ClassificationJob getCurrentJob();
 
 protected:
-	void run();
+   void run();
 
 private:
-	Profile* profile;
+   Profile* profile;
    ClassificationJob currentjob;
    bool stopFlag;
 
@@ -67,3 +67,4 @@ private:
 
 
 #endif /* CLASSIFYWORKER_H_ */
+

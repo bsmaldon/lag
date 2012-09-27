@@ -199,17 +199,17 @@ public:
 
    void set_slicing(bool slice)
    {
-	   this->slicing = slice;
+      this->slicing = slice;
    }
 
    void set_minz(double z)
    {
-	   this->minz = z;
+      this->minz = z;
    }
 
    void set_maxz(double z)
    {
-	   this->maxz = z;
+      this->maxz = z;
    }
 
    Glib::Dispatcher sig_class_progress;
@@ -448,3 +448,4 @@ protected:
 };
 
 #endif
+

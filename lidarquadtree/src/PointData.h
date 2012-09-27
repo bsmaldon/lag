@@ -37,29 +37,30 @@
 class PointData
 {
 public:
-	uint8_t wfDescriptorIndex;
-	U64 wfOffset;
-	uint32_t wfPacketSize;
-	float wfPointLocation;
-	float xt;
-	float yt;
-	float zt;
+   uint8_t wfDescriptorIndex;
+   U64 wfOffset;
+   uint32_t wfPacketSize;
+   float wfPointLocation;
+   float xt;
+   float yt;
+   float zt;
 
-	// Assignment operator that gets values from a laslib::LASwavepacket
-	PointData& operator=(LASwavepacket const& wavepacket);
+   // Assignment operator that gets values from a laslib::LASwavepacket
+   PointData& operator=(LASwavepacket const& wavepacket);
 };
 
 inline PointData& PointData::operator=(LASwavepacket const& wp)
 {
-	wfDescriptorIndex = wp.getIndex();
-	wfOffset = wp.getOffset();
-	wfPacketSize = wp.getSize();
-	wfPointLocation = wp.getLocation();
-	xt = wp.getXt();
-	yt = wp.getYt();
-	zt = wp.getZt();
+   wfDescriptorIndex = wp.getIndex();
+   wfOffset = wp.getOffset();
+   wfPacketSize = wp.getSize();
+   wfPointLocation = wp.getLocation();
+   xt = wp.getXt();
+   yt = wp.getYt();
+   zt = wp.getZt();
 
-	return *this;
+   return *this;
 }
 
 #endif /* POINTDATA_H_ */
+

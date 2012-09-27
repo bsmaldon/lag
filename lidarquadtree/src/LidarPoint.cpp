@@ -37,22 +37,23 @@
 LidarPoint::LidarPoint(double x, double y, double z, double time, uint16_t intensity, uint8_t classification, uint8_t flightline,
                        uint8_t returnNumber, uint8_t noOfReturns, uint8_t scanDirection, uint8_t scanEdge, uint8_t scanAngle,
                        uint16_t pointSourceId, int dataindex) : Point(x, y, z),
-                       time 			(time),
-                       intensity 		(intensity),
-                       classification 	(classification),
-                       flightline 		(flightline),
-                       packedByte 		(returnNumber),
-                       scanAngle		(scanAngle),
-                       pointSourceId	(pointSourceId),
-                       dataindex		(dataindex)
+                       time            (time),
+                       intensity       (intensity),
+                       classification  (classification),
+                       flightline      (flightline),
+                       packedByte      (returnNumber),
+                       scanAngle       (scanAngle),
+                       pointSourceId   (pointSourceId),
+                       dataindex       (dataindex)
 {
-	packedByte = packedByte | noOfReturns << 3;
-	packedByte = packedByte | scanDirection << 6;
-	packedByte = packedByte | scanEdge << 7;
+   packedByte = packedByte | noOfReturns << 3;
+   packedByte = packedByte | scanDirection << 6;
+   packedByte = packedByte | scanEdge << 7;
 }
 
 LidarPoint::LidarPoint() : Point()
 {}
+
 
 
 

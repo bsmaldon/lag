@@ -40,19 +40,19 @@ using namespace std;
 */
 BoxOverlay::BoxOverlay(Gtk::Label *label, Colour majorc, Colour minorc)
 :
-		directional 	(false),
-		orthogonalshape	(false),
-		slantedshape	(true),
-		label			(label),
-		majorcolour		(majorc),
-		minorcolour		(minorc),
-		slantwidth		(30),
-		ratio			(1),
-		zoomlevel		(1)
+      directional       (false),
+      orthogonalshape   (false),
+      slantedshape      (true),
+      label             (label),
+      majorcolour       (majorc),
+      minorcolour       (minorc),
+      slantwidth        (30),
+      ratio             (1),
+      zoomlevel         (1)
 
 {
-	if (majorcolour != minorcolour)
-		directional = true;
+   if (majorcolour != minorcolour)
+      directional = true;
 }
 
 /*
@@ -305,32 +305,32 @@ void BoxOverlay::makebox(double rmaxz)
 
       // Far left (where the differently coloured line is the near clipping plane if a profile).
       glVertex3d(start.getX()-(slantwidth/2)*height/length-centre.getX(),
-    		  start.getY()+(slantwidth/2)*breadth/length-centre.getY(),altitude);
+            start.getY()+(slantwidth/2)*breadth/length-centre.getY(),altitude);
 
       // Near left
       glVertex3d(start.getX()+(slantwidth/2)*height/length-centre.getX(),
-    		  start.getY()-(slantwidth/2)*breadth/length-centre.getY(),altitude);
+            start.getY()-(slantwidth/2)*breadth/length-centre.getY(),altitude);
 
       // If this is a profile then this line segment indicates the near clipping plane of the profile view.
       glColor3fv(minorcolour.getRGB());
 
       // Near left
       glVertex3d(start.getX()+(slantwidth/2)*height/length-centre.getX(),
-    		  start.getY()-(slantwidth/2)*breadth/length-centre.getY(),altitude);
+            start.getY()-(slantwidth/2)*breadth/length-centre.getY(),altitude);
 
       // Near right
       glVertex3d(end.getX()+(slantwidth/2)*height/length-centre.getX(),
-    		  end.getY()-(slantwidth/2)*breadth/length-centre.getY(),altitude);
+            end.getY()-(slantwidth/2)*breadth/length-centre.getY(),altitude);
 
       glColor3fv(majorcolour.getRGB());
 
       // Near right
       glVertex3d(end.getX()+(slantwidth/2)*height/length-centre.getX(),
-    		  end.getY()-(slantwidth/2)*breadth/length-centre.getY(),altitude);
+            end.getY()-(slantwidth/2)*breadth/length-centre.getY(),altitude);
 
       // Far right
       glVertex3d(end.getX()-(slantwidth/2)*height/length-centre.getX(),
-    		  end.getY()+(slantwidth/2)*breadth/length-centre.getY(),altitude);
+            end.getY()+(slantwidth/2)*breadth/length-centre.getY(),altitude);
 
       glEnd();
    }
@@ -358,7 +358,7 @@ void BoxOverlay::makebox(double rmaxz)
          }
          else
          {
-        	//If gradient positive
+           //If gradient positive
             glBegin(GL_LINE_LOOP);
                glColor3fv(majorcolour.getRGB());
                glVertex3d(start.getX()-centre.getX(),end.getY()-centre.getY(),altitude);
@@ -375,7 +375,7 @@ void BoxOverlay::makebox(double rmaxz)
       }
       else
       {
-    	 //If the gradient from the start to the end is positive:
+        //If the gradient from the start to the end is positive:
          if((end.getX() < start.getX() && start.getY() > end.getY()) || (end.getX() > start.getX() && start.getY() < end.getY()))
          {
             glBegin(GL_LINE_LOOP);
@@ -393,7 +393,7 @@ void BoxOverlay::makebox(double rmaxz)
          }
          else
          {
-        	//If gradient negative
+           //If gradient negative
             glBegin(GL_LINE_LOOP);
                glColor3fv(majorcolour.getRGB());
                glVertex3d(end.getX()-centre.getX(),start.getY()-centre.getY(),altitude);
@@ -410,3 +410,4 @@ void BoxOverlay::makebox(double rmaxz)
       }
    }
 }
+

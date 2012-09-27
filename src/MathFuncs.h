@@ -37,13 +37,14 @@
 using namespace std;
 
 double percentilevalue(double* data, int datasize, double percentile,
-		double minval, double maxval);
+      double minval, double maxval);
 
 bool* vetpoints(PointBucket* points, std::vector<double> xs,
-		std::vector<double> ys, int numberofcorners, bool profileNoisePoints);
+      std::vector<double> ys, int numberofcorners, bool profileNoisePoints);
 
 bool* vetpoints_slice(PointBucket* points, std::vector<double> xs,
-		std::vector<double> ys, int numberofcorners, bool profileNoisePoints,
-		double minz, double maxz);
+      std::vector<double> ys, int numberofcorners, bool profileNoisePoints,
+      double minz, double maxz);
 
 #endif
+

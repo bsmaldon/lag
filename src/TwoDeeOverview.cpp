@@ -43,48 +43,48 @@
 */
 TwoDeeOverview::TwoDeeOverview(
          const Glib::RefPtr<const Gdk::GL::Config>& config,
-		   int bucketlimit, Gtk::Label *rulerlabel)
-:	LagDisplay(config, bucketlimit),
-		drawnsofarminx		(0),
-		drawnsofarminy		(0),
-		drawnsofarmaxx		(1),
-		drawnsofarmaxy		(1),
-		resolutionbase		(1),
-		resolutiondepth	(1),
-		numbuckets			(0),
-		raiseline			(false),
-		linetoraise			(0),
-		drawnsinceload		(false),
-		reversez		   	(false),
-		showlegend			(false),
-		showdistancescale	(false),
-		drawneverything	(false),
-		pointcount			(0),
-		vertices			   (NULL),
-		colours				(NULL),
-		tdoDisplayNoise	(true),
-		rulerlabel			(rulerlabel),
-		profiling			(false),
-		showprofile			(false),
-		fencing				(false),
-		showfence			(false),
-		rulerwidth			(2),
-		rulering			   (false),
-		heightenNonC		(false),
-		heightenGround		(false),
-		heightenLowVeg		(false),
-		heightenMedVeg		(false),
-		heightenHighVeg	(false),
-		heightenBuildings	(false),
-		heightenNoise		(false),
-		heightenMass		(false),
-		heightenWater		(false),
-		heightenOverlap	(false),
-		heightenUndefined	(false),
-		panningRefresh		(1),
-		slicing				(false),
-		latlong				(false),
-		superzoom			(false)
+         int bucketlimit, Gtk::Label *rulerlabel)
+:   LagDisplay(config, bucketlimit),
+      drawnsofarminx    (0),
+      drawnsofarminy    (0),
+      drawnsofarmaxx    (1),
+      drawnsofarmaxy    (1),
+      resolutionbase    (1),
+      resolutiondepth   (1),
+      numbuckets        (0),
+      raiseline         (false),
+      linetoraise       (0),
+      drawnsinceload    (false),
+      reversez          (false),
+      showlegend        (false),
+      showdistancescale (false),
+      drawneverything   (false),
+      pointcount        (0),
+      vertices          (NULL),
+      colours           (NULL),
+      tdoDisplayNoise   (true),
+      rulerlabel        (rulerlabel),
+      profiling         (false),
+      showprofile       (false),
+      fencing           (false),
+      showfence         (false),
+      rulerwidth        (2),
+      rulering          (false),
+      heightenNonC      (false),
+      heightenGround    (false),
+      heightenLowVeg    (false),
+      heightenMedVeg    (false),
+      heightenHighVeg   (false),
+      heightenBuildings (false),
+      heightenNoise     (false),
+      heightenMass      (false),
+      heightenWater     (false),
+      heightenOverlap   (false),
+      heightenUndefined (false),
+      panningRefresh    (1),
+      slicing           (false),
+      latlong           (false),
+      superzoom         (false)
 {
    // Arrays for openGL input
    vertices = new float[3*bucketlimit];
@@ -168,8 +168,8 @@ TwoDeeOverview::~TwoDeeOverview()
    delete[] vertices;
    delete[] colours;
 
-	delete fencebox;
-	delete profbox;
+   delete fencebox;
+   delete profbox;
 }
 
 /*
@@ -181,11 +181,11 @@ TwoDeeOverview::~TwoDeeOverview()
 */
 void TwoDeeOverview::convert_to_latlong(double* point)
 {
-	GeoProjectionConverter gpc;
-	char tmp[255];
-	gpc.set_longlat_projection(tmp, false);
-	gpc.set_utm_projection(const_cast<char*>(utm_zone.c_str()), tmp, true);
-	gpc.to_target(point);
+   GeoProjectionConverter gpc;
+   char tmp[255];
+   gpc.set_longlat_projection(tmp, false);
+   gpc.set_utm_projection(const_cast<char*>(utm_zone.c_str()), tmp, true);
+   gpc.to_target(point);
 }
 
 /*
@@ -407,21 +407,21 @@ void TwoDeeOverview::mainimage(PointBucket** buckets,int numbuckets)
    // which is then used to draw only the initially uncached ones.
    bool *drawnbucketsarray = new bool[numbuckets];
    for(int i = 0;i < numbuckets;i++)
-	   drawnbucketsarray[i] = false;
+      drawnbucketsarray[i] = false;
 
    //Draw the points from the initially cached buckets.
    bool completed = drawpointsfrombuckets(buckets, numbuckets, drawnbucketsarray, true);
 
 #ifdef THREAD_DEBUG
    if(!completed)
-    	cout << "Pass of cached interrupted. Stopping!" << endl;
+       cout << "Pass of cached interrupted. Stopping!" << endl;
    else
 #endif
 
    if (completed)
    {
 #ifdef THREAD_DEBUG
-    	cout << "Finished pass of cached." << endl;
+       cout << "Finished pass of cached." << endl;
 #endif
 
       //Draw the points from the initially uncached buckets.
@@ -437,7 +437,7 @@ void TwoDeeOverview::mainimage(PointBucket** buckets,int numbuckets)
          if(numbuckets > 0)
             drawneverything = true;
 #ifdef THREAD_DEBUG
-        	cout << "Finished pass of uncached, thread completed." << endl;
+           cout << "Finished pass of uncached, thread completed." << endl;
 #endif
       }
    }
@@ -577,7 +577,7 @@ bool TwoDeeOverview::drawpointsfrombuckets(PointBucket** buckets,int numbuckets,
 
                if (slicing && (z < slice_minz || z > slice_maxz))
                {
-            	   continue;
+                  continue;
                }
 
                //This is here because it is used in calculations.
@@ -673,7 +673,7 @@ bool TwoDeeOverview::drawpointsfrombuckets(PointBucket** buckets,int numbuckets,
                   // and the points will be drawn at the same height.
                   if(z>rmaxz+900)
                   {
-                	 z = rmaxz+900+z/1000;
+                    z = rmaxz+900+z/1000;
                      if(z>rmaxz+990)z=rmaxz+990;
                   }
                }
@@ -702,9 +702,9 @@ bool TwoDeeOverview::drawpointsfrombuckets(PointBucket** buckets,int numbuckets,
                   // reversed.
                   vertices[3*pointcount+2]= rmaxz + rminz - z;
 
-               colours[3*pointcount]=tempColour.getR();		//red;
-               colours[3*pointcount+1]=tempColour.getG();	//green;
-               colours[3*pointcount+2]=tempColour.getB();	//blue;
+               colours[3*pointcount]=tempColour.getR();      //red;
+               colours[3*pointcount+1]=tempColour.getG();   //green;
+               colours[3*pointcount+2]=tempColour.getB();   //blue;
                pointcount++;
             }
          }
@@ -971,7 +971,7 @@ bool TwoDeeOverview::drawviewable(int imagetype)
    guard_against_interaction_between_GL_areas();
 
    if (lidardata == NULL)
-	   return false;
+      return false;
 
    if (drawing_thread == NULL)
    {
@@ -1009,7 +1009,7 @@ bool TwoDeeOverview::drawviewable(int imagetype)
       // time.
 
       if(imagetype == 3)
-    	  drawnsinceload = true;
+         drawnsinceload = true;
 
       //Limits of viewable area:
       double minx = centre.getX()-pixelsToImageUnits(get_width()/2);
@@ -2126,10 +2126,10 @@ void TwoDeeOverview::makerulerbox()
 */
 bool TwoDeeOverview::on_zoom(GdkEventScroll* event)
 {
-	double factor = 2;
+   double factor = 2;
 
-	if (superzoom)
-		factor = 0.2;
+   if (superzoom)
+      factor = 0.2;
 
    centre.translate(pixelsToImageUnits(event->x-get_width()/2),
                     -pixelsToImageUnits(event->y-get_height()/2), 
@@ -2261,28 +2261,29 @@ void TwoDeeOverview::toggleNoise()
 */
 void TwoDeeOverview::set_superzoom(bool zoom)
 {
-	superzoom = zoom;
+   superzoom = zoom;
 
-	if (superzoom)
-	{
-	    Gdk::Cursor cursor(Gdk::CROSSHAIR);
-	   	if(is_realized())get_window()->set_cursor(cursor);
+   if (superzoom)
+   {
+       Gdk::Cursor cursor(Gdk::CROSSHAIR);
+         if(is_realized())get_window()->set_cursor(cursor);
 
-		setpointwidth(2);
+      setpointwidth(2);
 
-		for (int i = 0; i < 10; ++i)
-		{
-			zoomlevel+=pow(zoomlevel, zoompower)/2;
-		}
-	}
-	else
-	{
-	   	if(is_realized())get_window()->set_cursor();
-		setpointwidth(1.0);
-	}
+      for (int i = 0; i < 10; ++i)
+      {
+         zoomlevel+=pow(zoomlevel, zoompower)/2;
+      }
+   }
+   else
+   {
+         if(is_realized())get_window()->set_cursor();
+      setpointwidth(1.0);
+   }
 
-	resetview();
-	set_overlay_zoomlevels(zoomlevel);
-	drawviewable(1);
+   resetview();
+   set_overlay_zoomlevels(zoomlevel);
+   drawviewable(1);
 }
+
 

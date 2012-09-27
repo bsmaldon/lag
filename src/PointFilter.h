@@ -33,16 +33,17 @@
 ===============================================================================
 
  PointFilter - a structure to hold filter arguments in a commandline-like string.
- 	 	 	   If argc = 0 the filter is inactive.
+               If argc = 0 the filter is inactive.
 
 ===============================================================================
 */
 struct PointFilter
 {
-	PointFilter(): argc(0) {};
-	~PointFilter() {};
-	int argc;
-	std::vector<std::string> args;
+   PointFilter(): argc(0) {};
+   ~PointFilter() {};
+   int argc;
+   std::vector<std::string> args;
 };
 
 #endif /* POINTFILTER_H_ */
+

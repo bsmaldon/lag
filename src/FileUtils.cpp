@@ -41,22 +41,22 @@
 */
 filetype_t test_filename(std::string const& filename)
 {
-	if (  filename.find(".las", filename.length() - 4) != std::string::npos
-		|| filename.find(".LAS", filename.length() - 4) != std::string::npos
+   if (  filename.find(".las", filename.length() - 4) != std::string::npos
+      || filename.find(".LAS", filename.length() - 4) != std::string::npos
       || filename.find(".laz", filename.length() - 4) != std::string::npos
       || filename.find(".LAZ", filename.length() - 4) != std::string::npos )
-	{
-		return LAS_FILE;
-	}
-	else if (filename.find(".txt", filename.length() - 4) != std::string::npos
-			|| filename.find(".TXT", filename.length() - 4) != std::string::npos
-			|| filename.find(".csv", filename.length() - 4) != std::string::npos
-			|| filename.find(".CSV", filename.length() - 4) != std::string::npos)
-	{
-		return ASCII_FILE;
-	}
+   {
+      return LAS_FILE;
+   }
+   else if (filename.find(".txt", filename.length() - 4) != std::string::npos
+         || filename.find(".TXT", filename.length() - 4) != std::string::npos
+         || filename.find(".csv", filename.length() - 4) != std::string::npos
+         || filename.find(".CSV", filename.length() - 4) != std::string::npos)
+   {
+      return ASCII_FILE;
+   }
 
-	return UNKNOWN_FILE;
+   return UNKNOWN_FILE;
 }
 
 /*
@@ -69,7 +69,7 @@ filetype_t test_filename(std::string const& filename)
 */
 bool has_waveform(LASreader const* reader)
 {
-	return (reader->header.version_minor >= 3);
+   return (reader->header.version_minor >= 3);
 }
 
 
@@ -83,7 +83,7 @@ bool has_waveform(LASreader const* reader)
 */
 bool is_latlong(LASreader const* reader)
 {
-	return (-360 < reader->header.min_x  && -360 < reader->header.min_y && reader->header.max_x < 360 && reader->header.max_y < 360);
+   return (-360 < reader->header.min_x  && -360 < reader->header.min_y && reader->header.max_x < 360 && reader->header.max_y < 360);
 }
 
 /*
@@ -96,8 +96,9 @@ bool is_latlong(LASreader const* reader)
 */
 char* convert_string(std::string const& str)
 {
-	char* c = new char[str.size() + 1];
-	strcpy(c, str.c_str());
-	return c;
+   char* c = new char[str.size() + 1];
+   strcpy(c, str.c_str());
+   return c;
 }
+
 

@@ -41,22 +41,22 @@ QuadtreeNode::QuadtreeNode(double minX, double minY, double maxX, double maxY,
                      string instanceDirectory, int resolutionBase,
                      int numberOfResolutionLevels)
 :
-		a_					(NULL),
-		b_					(NULL),
-		c_					(NULL),
-		d_					(NULL),
-		minX_				(minX),
-		minY_				(minY),
-		maxX_				(maxX),
-		maxY_				(maxY),
-		capacity_			(capacity),
-		numberOfPoints_		(0),
-		bucket_				(NULL),
-		leaf_				(true),
-		MCP_				(MCP),
-		instanceDirectory_	(instanceDirectory),
-		resolutionBase_		(resolutionBase),
-		numberOfResolutionLevels_ (numberOfResolutionLevels)
+      a_                (NULL),
+      b_                (NULL),
+      c_                (NULL),
+      d_                (NULL),
+      minX_             (minX),
+      minY_             (minY),
+      maxX_             (maxX),
+      maxY_             (maxY),
+      capacity_         (capacity),
+      numberOfPoints_   (0),
+      bucket_           (NULL),
+      leaf_             (true),
+      MCP_              (MCP),
+      instanceDirectory_         (instanceDirectory),
+      resolutionBase_            (resolutionBase),
+      numberOfResolutionLevels_  (numberOfResolutionLevels)
 {}
 
 
@@ -66,37 +66,37 @@ QuadtreeNode::QuadtreeNode(double minX, double minY, double maxX, double maxY,
                            string instanceDirectory, int resolutionbase,
                            int numberOfResolutionLevels)
 :
-		a_					(a),
-		b_					(b),
-		c_					(c),
-		d_					(d),
-		minX_				(minX),
-		minY_				(minY),
-		maxX_				(maxX),
-		maxY_				(maxY),
-		capacity_			(capacity),
-		numberOfPoints_		(0),
-		bucket_				(NULL),
-		leaf_				(false),
-		MCP_				(MCP),
-		instanceDirectory_	(instanceDirectory),
-		resolutionBase_		(resolutionbase),
-		numberOfResolutionLevels_ (numberOfResolutionLevels)
+      a_               (a),
+      b_               (b),
+      c_               (c),
+      d_               (d),
+      minX_            (minX),
+      minY_            (minY),
+      maxX_            (maxX),
+      maxY_            (maxY),
+      capacity_         (capacity),
+      numberOfPoints_      (0),
+      bucket_            (NULL),
+      leaf_            (false),
+      MCP_            (MCP),
+      instanceDirectory_   (instanceDirectory),
+      resolutionBase_      (resolutionbase),
+      numberOfResolutionLevels_ (numberOfResolutionLevels)
 {
 }
 
 
 QuadtreeNode::~QuadtreeNode()
 {
-	if (leaf_)
-		delete bucket_;
-	else
-	{
-		delete a_;
-		delete b_;
-		delete c_;
-		delete d_;
-	}
+   if (leaf_)
+      delete bucket_;
+   else
+   {
+      delete a_;
+      delete b_;
+      delete c_;
+      delete d_;
+   }
 }
 
 void QuadtreeNode::print()
@@ -173,7 +173,7 @@ QuadtreeNode* QuadtreeNode::pickChild(LidarPoint newPoint)
    }
    else
    {
-	   throw OutOfBoundsException("failed to fit into any of the four child nodes, big problem");
+      throw OutOfBoundsException("failed to fit into any of the four child nodes, big problem");
    }
 }
 
@@ -274,7 +274,7 @@ void QuadtreeNode::splitNode()
 
 bool QuadtreeNode::insert(LidarPoint newPoint)
 {
-	// if the point dosen't belong in this subset of the tree return false
+   // if the point dosen't belong in this subset of the tree return false
    if (newPoint.getX() < minX_ || newPoint.getX() > maxX_ || 
        newPoint.getY() < minY_ || newPoint.getY() > maxY_)
    {
@@ -373,7 +373,7 @@ void QuadtreeNode::advSubset(vector<double> horizontalCornerValues, vector<doubl
                              int size, vector<PointBucket*> *buckets)
 {
    if (this == NULL)
-	   return;
+      return;
 
    // convert boundary to polygon
    vector<double> Xs(4);
@@ -401,3 +401,4 @@ void QuadtreeNode::advSubset(vector<double> horizontalCornerValues, vector<doubl
       }
    }
 }
+

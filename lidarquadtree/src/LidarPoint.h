@@ -85,12 +85,12 @@ inline void LidarPoint::setClassification(int classification)
 
 inline void LidarPoint::setDataindex(int dataindex)
 {
-	this->dataindex = dataindex;
+   this->dataindex = dataindex;
 }
 
 inline void LidarPoint::setFlightlineNumber(int number)
 {
-	this->flightline = number;
+   this->flightline = number;
 }
 
 // Getter methods
@@ -108,23 +108,24 @@ inline int LidarPoint::getDataindex() { return dataindex; }
 
 inline LidarPoint& LidarPoint::operator=(LASpoint const& laspoint)
 {
-	x_ = laspoint.get_x();
-	y_ = laspoint.get_y();
-	z_ = laspoint.get_z();
-	time = laspoint.gps_time;
-	intensity = laspoint.intensity;
-	classification = laspoint.classification;
-	packedByte = laspoint.return_number;
-	scanAngle = laspoint.scan_angle_rank;
-	pointSourceId = laspoint.point_source_ID;
+   x_ = laspoint.get_x();
+   y_ = laspoint.get_y();
+   z_ = laspoint.get_z();
+   time = laspoint.gps_time;
+   intensity = laspoint.intensity;
+   classification = laspoint.classification;
+   packedByte = laspoint.return_number;
+   scanAngle = laspoint.scan_angle_rank;
+   pointSourceId = laspoint.point_source_ID;
 
-	packedByte = packedByte | laspoint.number_of_returns_of_given_pulse << 3;
-	packedByte = packedByte | laspoint.scan_direction_flag << 6;
-	packedByte = packedByte | laspoint.edge_of_flight_line << 7;
+   packedByte = packedByte | laspoint.number_of_returns_of_given_pulse << 3;
+   packedByte = packedByte | laspoint.scan_direction_flag << 6;
+   packedByte = packedByte | laspoint.edge_of_flight_line << 7;
 
-	flightline = 0;
+   flightline = 0;
 
-	return *this;
+   return *this;
 }
 
 #endif
+

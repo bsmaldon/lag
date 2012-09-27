@@ -92,12 +92,12 @@ Colour::Colour(const std::string& colourName)
 */
 bool operator==(Colour& lhs, Colour& rhs)
 {
-	for(int i = 0; i < 3; ++i)
-	{
-		if(lhs.getRGB()[i] != rhs.getRGB()[i])
-			return false;
-	}
-	return true;
+   for(int i = 0; i < 3; ++i)
+   {
+      if(lhs.getRGB()[i] != rhs.getRGB()[i])
+         return false;
+   }
+   return true;
 }
 
 /*
@@ -107,10 +107,10 @@ bool operator==(Colour& lhs, Colour& rhs)
 */
 bool operator!=(Colour& lhs, Colour& rhs)
 {
-	if (lhs == rhs)
-		return false;
-	else
-		return true;
+   if (lhs == rhs)
+      return false;
+   else
+      return true;
 }
 
 /*
@@ -291,3 +291,4 @@ void Colour::setRGB(float r, float g, float b)
    colourValues[1] = g;
    colourValues[2] = b;
 }
+

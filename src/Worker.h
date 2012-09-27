@@ -41,24 +41,24 @@
 class Worker
 {
 public:
-	Worker() :
-		thread(0),
-		stopped(false)
-	{}
+   Worker() :
+      thread(0),
+      stopped(false)
+   {}
 
-	virtual ~Worker()
-	{
-		{
-			Glib::Mutex::Lock lock (mutex);
-			stopped = true;
-		}
+   virtual ~Worker()
+   {
+      {
+         Glib::Mutex::Lock lock (mutex);
+         stopped = true;
+      }
       this->join();
-	}
+   }
 
-	void start()
-	{
-		thread = Glib::Thread::create(sigc::mem_fun(*this, &Worker::run), true);
-	}
+   void start()
+   {
+      thread = Glib::Thread::create(sigc::mem_fun(*this, &Worker::run), true);
+   }
 
    void join()
    {
@@ -67,15 +67,16 @@ public:
       thread = 0;
    }
 
-	Glib::Dispatcher sig_done;
+   Glib::Dispatcher sig_done;
 
 protected:
-	virtual void run() = 0;
+   virtual void run() = 0;
 
-	Glib::Thread* thread;
-	Glib::Mutex mutex;
-	bool stopped;
+   Glib::Thread* thread;
+   Glib::Mutex mutex;
+   bool stopped;
 };
 
 
 #endif /* WORKER_H_ */
+

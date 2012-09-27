@@ -31,7 +31,7 @@
  */
 
 #ifndef _COLLISIONDETECTION_H
-#define	_COLLISIONDETECTION_H
+#define   _COLLISIONDETECTION_H
 
 #include <vector>
 
@@ -101,5 +101,6 @@ bool vectorTest(std::vector<double> Xs, std::vector<double> Ys, int size, double
 bool axisSeperationTest(std::vector<double> Xs1, std::vector<double> Ys1, int size1,
                         std::vector<double> Xs2, std::vector<double> Ys2, int size2);
 
-#endif	/* _COLLISIONDETECTION_H */
+#endif   /* _COLLISIONDETECTION_H */
+
 

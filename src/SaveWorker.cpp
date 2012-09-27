@@ -40,34 +40,34 @@
 ==================================
 */
 SaveWorker::SaveWorker(FileSaver* fs, std::string filename, std::string filein,
-   		int flightline, std::string parse_string, bool use_latlong,
-	   	bool use_default_scalefactor, double scale_factor[3],
+         int flightline, std::string parse_string, bool use_latlong,
+         bool use_default_scalefactor, double scale_factor[3],
          Glib::Mutex* pointbucket_mutex) :
-		Worker(),
-		filesaver               (fs),
-		filename                (filename),
-		source_filename         (filein),
-		flightline_number       (flightline),
-		parse_string            (parse_string),
-		latlong_output          (use_latlong),
-		latlong_input           (false),
-		use_default_scalefactor	(use_default_scalefactor),
-		reader                  (0),
-		writer                  (0),
-		reproject_quantizer     (0),
-		saved_quantizer         (0),
+      Worker(),
+      filesaver               (fs),
+      filename                (filename),
+      source_filename         (filein),
+      flightline_number       (flightline),
+      parse_string            (parse_string),
+      latlong_output          (use_latlong),
+      latlong_input           (false),
+      use_default_scalefactor (use_default_scalefactor),
+      reader                  (0),
+      writer                  (0),
+      reproject_quantizer     (0),
+      saved_quantizer         (0),
       pointbucket_mutex       (pointbucket_mutex)
 {
-	if (!this->use_default_scalefactor)
-	{
-		this->scale_factor[0] = scale_factor[0];
-		this->scale_factor[1] = scale_factor[1];
-		this->scale_factor[2] = scale_factor[2];
-	}
-	else
-	{
-		this->scale_factor[0] = this->scale_factor[1] = this->scale_factor[2] = 0;
-	}
+   if (!this->use_default_scalefactor)
+   {
+      this->scale_factor[0] = scale_factor[0];
+      this->scale_factor[1] = scale_factor[1];
+      this->scale_factor[2] = scale_factor[2];
+   }
+   else
+   {
+      this->scale_factor[0] = this->scale_factor[1] = this->scale_factor[2] = 0;
+   }
 }
 
 /*
@@ -79,56 +79,56 @@ SaveWorker::SaveWorker(FileSaver* fs, std::string filename, std::string filein,
 */
 void SaveWorker::save_points(int n, LidarPoint* points)
 {
-	LASpoint* point = new LASpoint();
-	point->init(&reader->header, reader->header.point_data_format, reader->header.point_data_record_length, &reader->header);
+   LASpoint* point = new LASpoint();
+   point->init(&reader->header, reader->header.point_data_format, reader->header.point_data_record_length, &reader->header);
 
-	for (int k = 0; k < n; ++k)
-	{
-		++number_of_points;
+   for (int k = 0; k < n; ++k)
+   {
+      ++number_of_points;
 
-		point->gps_time = points[k].getTime();
-		point->classification = points[k].getClassification();
+      point->gps_time = points[k].getTime();
+      point->classification = points[k].getClassification();
 
-		// latlong check and convertions
-		if (latlong_output)
-		{
-			double coords[3];
-			coords[0] = points[k].getX();
-			coords[1] = points[k].getY();
-			coords[2] = points[k].getZ();
-			gpc.to_target(coords);
-			point->set_x(coords[0]);
-			point->set_y(coords[1]);
-			point->set_z(coords[2]);
-		}
-		else
-		{
-			point->set_x(points[k].getX());
-			point->set_y(points[k].getY());
-			point->set_z(points[k].getZ());
-		}
+      // latlong check and convertions
+      if (latlong_output)
+      {
+         double coords[3];
+         coords[0] = points[k].getX();
+         coords[1] = points[k].getY();
+         coords[2] = points[k].getZ();
+         gpc.to_target(coords);
+         point->set_x(coords[0]);
+         point->set_y(coords[1]);
+         point->set_z(coords[2]);
+      }
+      else
+      {
+         point->set_x(points[k].getX());
+         point->set_y(points[k].getY());
+         point->set_z(points[k].getZ());
+      }
 
-		point->edge_of_flight_line = points[k].getScanEdge();
-		point->intensity = points[k].getIntensity();
-		point->number_of_returns_of_given_pulse = points[k].getNumberOfReturns();
-		point->point_source_ID = points[k].getPointSourceId();
-		point->return_number = points[k].getReturn();
-		point->scan_angle_rank = points[k].getScanAngle();
-		point->scan_direction_flag = points[k].getScanDirection();
+      point->edge_of_flight_line = points[k].getScanEdge();
+      point->intensity = points[k].getIntensity();
+      point->number_of_returns_of_given_pulse = points[k].getNumberOfReturns();
+      point->point_source_ID = points[k].getPointSourceId();
+      point->return_number = points[k].getReturn();
+      point->scan_angle_rank = points[k].getScanAngle();
+      point->scan_direction_flag = points[k].getScanDirection();
 
-		// reprojection
-		if (reproject_quantizer && !latlong_input)
-		{
-			point->compute_coordinates();
-			gpc.to_target(point->coordinates);
-			point->compute_xyz(reproject_quantizer);
-		}
+      // reprojection
+      if (reproject_quantizer && !latlong_input)
+      {
+         point->compute_coordinates();
+         gpc.to_target(point->coordinates);
+         point->compute_xyz(reproject_quantizer);
+      }
 
-		writer->write_point(point);
-		writer->update_inventory(point);
-	}
+      writer->write_point(point);
+      writer->update_inventory(point);
+   }
 
-	delete point;
+   delete point;
 }
 
 /*
@@ -141,97 +141,97 @@ void SaveWorker::save_points(int n, LidarPoint* points)
 */
 void SaveWorker::save_points_wf(int n, LidarPoint* points)
 {
-	LASpoint* point = new LASpoint();
-	point->init(&reader->header, reader->header.point_data_format, reader->header.point_data_record_length, &reader->header);
+   LASpoint* point = new LASpoint();
+   point->init(&reader->header, reader->header.point_data_format, reader->header.point_data_record_length, &reader->header);
 
-	// waveform stuff
-	string data_filename;
-	FILE* datafile = 0;
-	char* buffer = 0;
+   // waveform stuff
+   string data_filename;
+   FILE* datafile = 0;
+   char* buffer = 0;
 
-	// Get PointData file
-	tr1::unordered_map<uint8_t, std::string>::iterator it = LoadWorker::point_data_paths.find(flightline_number);
-	if (it != LoadWorker::point_data_paths.end())
-	{
-		data_filename = it->second;
-	}
-	else
-	{
-		throw OutOfBoundsException("SaveWorker: Flightline number does not exist.");
-	}
+   // Get PointData file
+   tr1::unordered_map<uint8_t, std::string>::iterator it = LoadWorker::point_data_paths.find(flightline_number);
+   if (it != LoadWorker::point_data_paths.end())
+   {
+      data_filename = it->second;
+   }
+   else
+   {
+      throw OutOfBoundsException("SaveWorker: Flightline number does not exist.");
+   }
 
-	datafile = fopen(data_filename.c_str(), "rb");
-	if (datafile == NULL)
-		throw FileException("SaveWorker: Error opening data file.");
+   datafile = fopen(data_filename.c_str(), "rb");
+   if (datafile == NULL)
+      throw FileException("SaveWorker: Error opening data file.");
 
-	buffer = new char[sizeof(PointData)];
+   buffer = new char[sizeof(PointData)];
 
-	for (int k = 0; k < n; ++k)
-	{
-		++number_of_points;
+   for (int k = 0; k < n; ++k)
+   {
+      ++number_of_points;
 
-		point->gps_time = points[k].getTime();
-		point->classification = points[k].getClassification();
+      point->gps_time = points[k].getTime();
+      point->classification = points[k].getClassification();
 
-		// latlong check and convertions
-		if (latlong_output)
-		{
-			double coords[3];
-			coords[0] = points[k].getX();
-			coords[1] = points[k].getY();
-			coords[2] = points[k].getZ();
-			gpc.to_target(coords);
-			point->set_x(coords[0]);
-			point->set_y(coords[1]);
-			point->set_z(coords[2]);
-		}
-		else
-		{
-			point->set_x(points[k].getX());
-			point->set_y(points[k].getY());
-			point->set_z(points[k].getZ());
-		}
+      // latlong check and convertions
+      if (latlong_output)
+      {
+         double coords[3];
+         coords[0] = points[k].getX();
+         coords[1] = points[k].getY();
+         coords[2] = points[k].getZ();
+         gpc.to_target(coords);
+         point->set_x(coords[0]);
+         point->set_y(coords[1]);
+         point->set_z(coords[2]);
+      }
+      else
+      {
+         point->set_x(points[k].getX());
+         point->set_y(points[k].getY());
+         point->set_z(points[k].getZ());
+      }
 
-		point->edge_of_flight_line = points[k].getScanEdge();
-		point->intensity = points[k].getIntensity();
-		point->number_of_returns_of_given_pulse = points[k].getNumberOfReturns();
-		point->point_source_ID = points[k].getPointSourceId();
-		point->return_number = points[k].getReturn();
-		point->scan_angle_rank = points[k].getScanAngle();
-		point->scan_direction_flag = points[k].getScanDirection();
+      point->edge_of_flight_line = points[k].getScanEdge();
+      point->intensity = points[k].getIntensity();
+      point->number_of_returns_of_given_pulse = points[k].getNumberOfReturns();
+      point->point_source_ID = points[k].getPointSourceId();
+      point->return_number = points[k].getReturn();
+      point->scan_angle_rank = points[k].getScanAngle();
+      point->scan_direction_flag = points[k].getScanDirection();
 
-		// waveform stuff
-		int s = sizeof(PointData);
-		PointData* temp;
-		fseek(datafile, points[k].getDataindex() * s, SEEK_SET);
-		fread(buffer, s, 1, datafile);
-		temp = (PointData*) buffer;
+      // waveform stuff
+      int s = sizeof(PointData);
+      PointData* temp;
+      fseek(datafile, points[k].getDataindex() * s, SEEK_SET);
+      fread(buffer, s, 1, datafile);
+      temp = (PointData*) buffer;
 
-		point->wavepacket.setIndex(temp->wfDescriptorIndex);
-		point->wavepacket.setOffset(temp->wfOffset);
-		point->wavepacket.setSize(temp->wfPacketSize);
-		point->wavepacket.setLocation(temp->wfPointLocation);
-		point->wavepacket.setXt(temp->xt);
-		point->wavepacket.setYt(temp->yt);
-		point->wavepacket.setZt(temp->zt);
+      point->wavepacket.setIndex(temp->wfDescriptorIndex);
+      point->wavepacket.setOffset(temp->wfOffset);
+      point->wavepacket.setSize(temp->wfPacketSize);
+      point->wavepacket.setLocation(temp->wfPointLocation);
+      point->wavepacket.setXt(temp->xt);
+      point->wavepacket.setYt(temp->yt);
+      point->wavepacket.setZt(temp->zt);
 
 
-		// reprojection
-		if (reproject_quantizer && !latlong_input)
-		{
-			point->compute_coordinates();
-			gpc.to_target(point->coordinates);
-			point->compute_xyz(reproject_quantizer);
-		}
+      // reprojection
+      if (reproject_quantizer && !latlong_input)
+      {
+         point->compute_coordinates();
+         gpc.to_target(point->coordinates);
+         point->compute_xyz(reproject_quantizer);
+      }
 
-		writer->write_point(point);
-		writer->update_inventory(point);
-	}
-	delete point;
+      writer->write_point(point);
+      writer->update_inventory(point);
+   }
+   delete point;
 
-	// close waveform temp file
-	fclose(datafile);
-	delete buffer;
+   // close waveform temp file
+   fclose(datafile);
+   delete buffer;
 }
 
 /*
@@ -244,66 +244,66 @@ void SaveWorker::save_points_wf(int n, LidarPoint* points)
 */
 void SaveWorker::close()
 {
-	writer->update_header(&reader->header, TRUE);
+   writer->update_header(&reader->header, TRUE);
 
-	// Check if input file contains waveform.
-	// If it does update output file header and append the data.
-	if (reader->header.version_minor >= 3)
-	{
-		// Let the GUI know we will be copying waveform data
-		sig_waveform();
+   // Check if input file contains waveform.
+   // If it does update output file header and append the data.
+   if (reader->header.version_minor >= 3)
+   {
+      // Let the GUI know we will be copying waveform data
+      sig_waveform();
 
-		FILE* fileout=0;
-		FILE* filein=0;
+      FILE* fileout=0;
+      FILE* filein=0;
 
-		fileout = fopen(filename.c_str(), "rb+");
-		if (fileout == NULL)
-		{
-			throw FileException("Error opening output file for writing waveform data.");
-		}
+      fileout = fopen(filename.c_str(), "rb+");
+      if (fileout == NULL)
+      {
+         throw FileException("Error opening output file for writing waveform data.");
+      }
 
-		// Manually update start_of_waveform_data_record in the header which is set to 0 by laslib.
-		// Otherwise we'd have to modify the library.
-		fseek(fileout, 227, SEEK_SET);
-		fwrite(&reader->header.start_of_waveform_data_packet_record, sizeof(I64), 1, fileout);
+      // Manually update start_of_waveform_data_record in the header which is set to 0 by laslib.
+      // Otherwise we'd have to modify the library.
+      fseek(fileout, 227, SEEK_SET);
+      fwrite(&reader->header.start_of_waveform_data_packet_record, sizeof(I64), 1, fileout);
 
-		// Copy waveform data
-		std::cout << "Copying waveform data. Please be patient..." << std::endl;
-		filein = fopen(source_filename.c_str(), "rb");
-		if (filein == NULL)
-		{
-			throw FileException("Error opening input file for reading waveform data.");
-		}
+      // Copy waveform data
+      std::cout << "Copying waveform data. Please be patient..." << std::endl;
+      filein = fopen(source_filename.c_str(), "rb");
+      if (filein == NULL)
+      {
+         throw FileException("Error opening input file for reading waveform data.");
+      }
 
-		// We need a file size to be able to track progress
-		fseek(filein, 0L, SEEK_END);
-		long int file_size = ftell(filein);
+      // We need a file size to be able to track progress
+      fseek(filein, 0L, SEEK_END);
+      long int file_size = ftell(filein);
 
-		// Now go back to the start of the waveform data
-		fseek(filein, reader->header.start_of_waveform_data_packet_record, SEEK_SET);
+      // Now go back to the start of the waveform data
+      fseek(filein, reader->header.start_of_waveform_data_packet_record, SEEK_SET);
 
-		// And to the end of the output file
-		fseek(fileout, 0, SEEK_END);
+      // And to the end of the output file
+      fseek(fileout, 0, SEEK_END);
 
-		// How much we've got to read
-		long int progress_step = (file_size - ftell(filein)) / 100;
+      // How much we've got to read
+      long int progress_step = (file_size - ftell(filein)) / 100;
 
-		// The copying reads a 100th of the waveform data at the time (usually around 5 - 20 Mb)
-		// and then signals progress after writing it to an output file.
-		size_t size;
-		char* buf = new char[progress_step];
+      // The copying reads a 100th of the waveform data at the time (usually around 5 - 20 Mb)
+      // and then signals progress after writing it to an output file.
+      size_t size;
+      char* buf = new char[progress_step];
 
-		while ((size = fread(buf, 1, progress_step, filein)) > 0 && !stopped)
-		{
-			fwrite(buf, 1, size, fileout);
-			sig_waveform_progress();
-		}
+      while ((size = fread(buf, 1, progress_step, filein)) > 0 && !stopped)
+      {
+         fwrite(buf, 1, size, fileout);
+         sig_waveform_progress();
+      }
 
-		delete buf;
+      delete buf;
 
-		if (filein) fclose(filein);
-		if (fileout) fclose(fileout);
-	}
+      if (filein) fclose(filein);
+      if (fileout) fclose(fileout);
+   }
 }
 
 /*
@@ -315,94 +315,94 @@ void SaveWorker::close()
 */
 void SaveWorker::run()
 {
-	if (filesaver->lidardata == NULL)
-		return;
-	
-	LASreadOpener lasreadopener;
-	LASwriteOpener laswriteopener;
+   if (filesaver->lidardata == NULL)
+      return;
+   
+   LASreadOpener lasreadopener;
+   LASwriteOpener laswriteopener;
 
-	lasreadopener.set_file_name(source_filename.c_str());
+   lasreadopener.set_file_name(source_filename.c_str());
 
-	// ASCII?
-	filetype_t source_filetype = test_filename(source_filename);
-	if (source_filetype == ASCII_FILE)
-	{
-		lasreadopener.set_parse_string(parse_string.c_str());
-		if (!use_default_scalefactor)
-			lasreadopener.set_scale_factor(scale_factor);
-	}
+   // ASCII?
+   filetype_t source_filetype = test_filename(source_filename);
+   if (source_filetype == ASCII_FILE)
+   {
+      lasreadopener.set_parse_string(parse_string.c_str());
+      if (!use_default_scalefactor)
+         lasreadopener.set_scale_factor(scale_factor);
+   }
 
-	reader = lasreadopener.open();
+   reader = lasreadopener.open();
 
-	if (reader == NULL)
-	{
-		std::cout << "SaveWorker: Error creating reader.\n";
-		sig_done();
-		return;
-	}
+   if (reader == NULL)
+   {
+      std::cout << "SaveWorker: Error creating reader.\n";
+      sig_done();
+      return;
+   }
 
-	number_of_points = 0;
+   number_of_points = 0;
 
-	// Conversions
-	latlong_input = is_latlong(reader);
+   // Conversions
+   latlong_input = is_latlong(reader);
 
-	std::cout << "latlong_input : " << latlong_input << ", latlong_output: " << latlong_output << std::endl;
+   std::cout << "latlong_input : " << latlong_input << ", latlong_output: " << latlong_output << std::endl;
 
-	if (latlong_input || latlong_output)
-		convert_projection();
+   if (latlong_input || latlong_output)
+      convert_projection();
 
-	if (reproject_quantizer)
-	{
-		if (latlong_input && !latlong_output)
-			reader->header = *reproject_quantizer;
-		else
-			reader->header = *saved_quantizer;
-	}
+   if (reproject_quantizer)
+   {
+      if (latlong_input && !latlong_output)
+         reader->header = *reproject_quantizer;
+      else
+         reader->header = *saved_quantizer;
+   }
 
-	laswriteopener.set_file_name(filename.c_str());
+   laswriteopener.set_file_name(filename.c_str());
 
-	// Ascii check
-	if (test_filename(filename) == ASCII_FILE)
-	{
-		laswriteopener.set_parse_string(parse_string.c_str());
-	}
+   // Ascii check
+   if (test_filename(filename) == ASCII_FILE)
+   {
+      laswriteopener.set_parse_string(parse_string.c_str());
+   }
 
-	writer = laswriteopener.open(&reader->header);
+   writer = laswriteopener.open(&reader->header);
 
-	if (writer == NULL)
-	{
-		std::cout << "SaveWorker: Error creating writer.\n";
-		sig_done();
-		return;
-	}
+   if (writer == NULL)
+   {
+      std::cout << "SaveWorker: Error creating writer.\n";
+      sig_done();
+      return;
+   }
 
 
-	LidarPoint *points = new LidarPoint[1048576];
-	int counter = 0;
-	vector<PointBucket*> *buckets;
-	Boundary *b = filesaver->lidardata->getBoundary();
+   LidarPoint *points = new LidarPoint[1048576];
+   int counter = 0;
+   vector<PointBucket*> *buckets;
+   Boundary *b = filesaver->lidardata->getBoundary();
 
-	vector<double> Xs(4);
-	vector<double> Ys(4);
-	Xs[0] = Xs[1] = b->minX - 5;
-	Xs[2] = Xs[3] = b->maxX + 5;
-	Ys[0] = Ys[3] = b->minY - 5;
-	Ys[1] = Ys[2] = b->maxY + 5;
+   vector<double> Xs(4);
+   vector<double> Ys(4);
+   Xs[0] = Xs[1] = b->minX - 5;
+   Xs[2] = Xs[3] = b->maxX + 5;
+   Ys[0] = Ys[3] = b->minY - 5;
+   Ys[1] = Ys[2] = b->maxY + 5;
 
-	buckets = filesaver->lidardata->advSubset(Xs, Ys, 4);
+   buckets = filesaver->lidardata->advSubset(Xs, Ys, 4);
 
-	// track progress
-	int progress_counter = 0;
-	int progress_step = buckets->size() < 100 ? 1 : int(buckets->size() / 100);
+   // track progress
+   int progress_counter = 0;
+   int progress_step = buckets->size() < 100 ? 1 : int(buckets->size() / 100);
 
-	// use appropriate function to save points depending on the point format
-	typedef void (SaveWorker::*save_points_fun_t)(int n, LidarPoint* points);
-	save_points_fun_t save_points_fun;
+   // use appropriate function to save points depending on the point format
+   typedef void (SaveWorker::*save_points_fun_t)(int n, LidarPoint* points);
+   save_points_fun_t save_points_fun;
 
-	if(has_waveform(reader))
-		save_points_fun = &SaveWorker::save_points_wf;
-	else
-		save_points_fun = &SaveWorker::save_points;
+   if(has_waveform(reader))
+      save_points_fun = &SaveWorker::save_points_wf;
+   else
+      save_points_fun = &SaveWorker::save_points;
 
    // exclusive access to pointbuckets
    {
@@ -441,20 +441,20 @@ void SaveWorker::run()
       }
    }
 
-	(this->*save_points_fun)(counter, points);
-	close();
+   (this->*save_points_fun)(counter, points);
+   close();
 
-	delete buckets;
-	delete b;
-	delete[] points;
+   delete buckets;
+   delete b;
+   delete[] points;
 
-	if (reproject_quantizer)
-	{
-		delete reproject_quantizer;
-		delete saved_quantizer;
-	}
+   if (reproject_quantizer)
+   {
+      delete reproject_quantizer;
+      delete saved_quantizer;
+   }
 
-	sig_done();
+   sig_done();
 }
 
 /*
@@ -466,8 +466,8 @@ void SaveWorker::run()
 */
 void SaveWorker::stop()
 {
-	Glib::Mutex::Lock lock (mutex);
-	stopped = true;
+   Glib::Mutex::Lock lock (mutex);
+   stopped = true;
 }
 
 /*
@@ -479,183 +479,184 @@ void SaveWorker::stop()
 */
 void SaveWorker::convert_projection()
 {
-	reproject_quantizer = 0;
-	saved_quantizer = 0;
+   reproject_quantizer = 0;
+   saved_quantizer = 0;
 
-	char tmp[256];
+   char tmp[256];
 
-	// If the input is in latlong we need two converters
-	if (latlong_input)
-	{
-		GeoProjectionParametersUTM* utm = new GeoProjectionParametersUTM();
-		std::stringstream zone;
-		gpc.compute_utm_zone(
-				(reader->header.min_y + reader->header.max_y) / 2,
-				(reader->header.min_x + reader->header.max_x) / 2, utm);
-		zone << utm->utm_zone_number << utm->utm_zone_letter;
+   // If the input is in latlong we need two converters
+   if (latlong_input)
+   {
+      GeoProjectionParametersUTM* utm = new GeoProjectionParametersUTM();
+      std::stringstream zone;
+      gpc.compute_utm_zone(
+            (reader->header.min_y + reader->header.max_y) / 2,
+            (reader->header.min_x + reader->header.max_x) / 2, utm);
+      zone << utm->utm_zone_number << utm->utm_zone_letter;
 
-		// A converter to convert from UTM data in quandtree to latlong
-		gpc.set_utm_projection(const_cast<char*>(zone.str().c_str()), tmp,
-				true);
+      // A converter to convert from UTM data in quandtree to latlong
+      gpc.set_utm_projection(const_cast<char*>(zone.str().c_str()), tmp,
+            true);
 
-		// A converter to convert from latlong data in the reader->header to UTM
-		gpc_ll.set_longlat_projection(tmp, true);
+      // A converter to convert from latlong data in the reader->header to UTM
+      gpc_ll.set_longlat_projection(tmp, true);
 
-		delete utm;
-	}
-	// If the input is in UTM we have to find the zone from the VLRs
-	// Note that this will not work with ascii
-	else
-	{
-		if (reader->header.vlr_geo_keys)
-		{
-			gpc.set_projection_from_geo_keys(
-					reader->header.vlr_geo_keys[0].number_of_keys,
-					(GeoProjectionGeoKeys*) reader->header.vlr_geo_key_entries,
-					reader->header.vlr_geo_ascii_params,
-					reader->header.vlr_geo_double_params);
-		}
-		else
-		{
-			std::cout
-					<< "No projection information in the input file. Will output rubbish.";
-		}
-	}
+      delete utm;
+   }
+   // If the input is in UTM we have to find the zone from the VLRs
+   // Note that this will not work with ascii
+   else
+   {
+      if (reader->header.vlr_geo_keys)
+      {
+         gpc.set_projection_from_geo_keys(
+               reader->header.vlr_geo_keys[0].number_of_keys,
+               (GeoProjectionGeoKeys*) reader->header.vlr_geo_key_entries,
+               reader->header.vlr_geo_ascii_params,
+               reader->header.vlr_geo_double_params);
+      }
+      else
+      {
+         std::cout
+               << "No projection information in the input file. Will output rubbish.";
+      }
+   }
 
-	if (latlong_output)
-	{
-		gpc.set_longlat_projection(tmp, false);
-		gpc_ll.set_target_utm_projection(tmp);
-	}
-	else
-	{
-		gpc.set_target_utm_projection(tmp);
-	}
+   if (latlong_output)
+   {
+      gpc.set_longlat_projection(tmp, false);
+      gpc_ll.set_target_utm_projection(tmp);
+   }
+   else
+   {
+      gpc.set_target_utm_projection(tmp);
+   }
 
-	// latlong to UTM
-	if (latlong_input && !latlong_output)
-	{
-		reproject_quantizer = new LASquantizer();
+   // latlong to UTM
+   if (latlong_input && !latlong_output)
+   {
+      reproject_quantizer = new LASquantizer();
 
-		double point[3];
-		point[0] = (reader->header.min_x + reader->header.max_x) / 2;
-		point[1] = (reader->header.min_y + reader->header.max_y) / 2;
-		point[2] = (reader->header.min_z + reader->header.max_z) / 2;
-		gpc_ll.to_target(point);
+      double point[3];
+      point[0] = (reader->header.min_x + reader->header.max_x) / 2;
+      point[1] = (reader->header.min_y + reader->header.max_y) / 2;
+      point[2] = (reader->header.min_z + reader->header.max_z) / 2;
+      gpc_ll.to_target(point);
 
-		reproject_quantizer->x_scale_factor = gpc_ll.get_target_precision();
-		reproject_quantizer->y_scale_factor = gpc_ll.get_target_precision();
-		reproject_quantizer->z_scale_factor = reader->header.z_scale_factor;
-		reproject_quantizer->x_offset = ((I64) ((point[0]
-				/ reproject_quantizer->x_scale_factor) / 10000000)) * 10000000
-				* reproject_quantizer->x_scale_factor;
-		reproject_quantizer->y_offset = ((I64) ((point[1]
-				/ reproject_quantizer->y_scale_factor) / 10000000)) * 10000000
-				* reproject_quantizer->y_scale_factor;
-		reproject_quantizer->z_offset = ((I64) ((point[2]
-				/ reproject_quantizer->z_scale_factor) / 10000000)) * 10000000
-				* reproject_quantizer->z_scale_factor;
+      reproject_quantizer->x_scale_factor = gpc_ll.get_target_precision();
+      reproject_quantizer->y_scale_factor = gpc_ll.get_target_precision();
+      reproject_quantizer->z_scale_factor = reader->header.z_scale_factor;
+      reproject_quantizer->x_offset = ((I64) ((point[0]
+            / reproject_quantizer->x_scale_factor) / 10000000)) * 10000000
+            * reproject_quantizer->x_scale_factor;
+      reproject_quantizer->y_offset = ((I64) ((point[1]
+            / reproject_quantizer->y_scale_factor) / 10000000)) * 10000000
+            * reproject_quantizer->y_scale_factor;
+      reproject_quantizer->z_offset = ((I64) ((point[2]
+            / reproject_quantizer->z_scale_factor) / 10000000)) * 10000000
+            * reproject_quantizer->z_scale_factor;
 
-		int number_of_keys;
-		GeoProjectionGeoKeys* geo_keys = 0;
-		int num_geo_double_params;
-		double* geo_double_params = 0;
+      int number_of_keys;
+      GeoProjectionGeoKeys* geo_keys = 0;
+      int num_geo_double_params;
+      double* geo_double_params = 0;
 
-		if (gpc.get_geo_keys_from_projection(number_of_keys, &geo_keys,
-				num_geo_double_params, &geo_double_params,
-				!gpc_ll.has_projection(false)))
-		{
-			reader->header.set_geo_keys(number_of_keys,
-					(LASvlr_key_entry*) geo_keys);
-			free(geo_keys);
-			if (geo_double_params)
-			{
-				reader->header.set_geo_double_params(num_geo_double_params,
-						geo_double_params);
-				free(geo_double_params);
-			}
-			else
-			{
-				reader->header.del_geo_double_params();
-			}
-			reader->header.del_geo_ascii_params();
-		}
-	}
-	// latlong to latlong
-	else if (latlong_input && latlong_output)
-	{
-		reproject_quantizer = new LASquantizer();
+      if (gpc.get_geo_keys_from_projection(number_of_keys, &geo_keys,
+            num_geo_double_params, &geo_double_params,
+            !gpc_ll.has_projection(false)))
+      {
+         reader->header.set_geo_keys(number_of_keys,
+               (LASvlr_key_entry*) geo_keys);
+         free(geo_keys);
+         if (geo_double_params)
+         {
+            reader->header.set_geo_double_params(num_geo_double_params,
+                  geo_double_params);
+            free(geo_double_params);
+         }
+         else
+         {
+            reader->header.del_geo_double_params();
+         }
+         reader->header.del_geo_ascii_params();
+      }
+   }
+   // latlong to latlong
+   else if (latlong_input && latlong_output)
+   {
+      reproject_quantizer = new LASquantizer();
 
-		double point[3];
-		point[0] = (reader->header.min_x + reader->header.max_x) / 2;
-		point[1] = (reader->header.min_y + reader->header.max_y) / 2;
-		point[2] = (reader->header.min_z + reader->header.max_z) / 2;
-		gpc_ll.to_target(point);
-		gpc.to_target(point);
+      double point[3];
+      point[0] = (reader->header.min_x + reader->header.max_x) / 2;
+      point[1] = (reader->header.min_y + reader->header.max_y) / 2;
+      point[2] = (reader->header.min_z + reader->header.max_z) / 2;
+      gpc_ll.to_target(point);
+      gpc.to_target(point);
 
-		reproject_quantizer->x_scale_factor = gpc.get_target_precision();
-		reproject_quantizer->y_scale_factor = gpc.get_target_precision();
-		reproject_quantizer->z_scale_factor = reader->header.z_scale_factor;
-		reproject_quantizer->x_offset = ((I64) ((point[0]
-				/ reproject_quantizer->x_scale_factor) / 10000000)) * 10000000
-				* reproject_quantizer->x_scale_factor;
-		reproject_quantizer->y_offset = ((I64) ((point[1]
-				/ reproject_quantizer->y_scale_factor) / 10000000)) * 10000000
-				* reproject_quantizer->y_scale_factor;
-		reproject_quantizer->z_offset = ((I64) ((point[2]
-				/ reproject_quantizer->z_scale_factor) / 10000000)) * 10000000
-				* reproject_quantizer->z_scale_factor;
-	}
-	// UTM to latlong
-	else
-	{
-		reproject_quantizer = new LASquantizer();
+      reproject_quantizer->x_scale_factor = gpc.get_target_precision();
+      reproject_quantizer->y_scale_factor = gpc.get_target_precision();
+      reproject_quantizer->z_scale_factor = reader->header.z_scale_factor;
+      reproject_quantizer->x_offset = ((I64) ((point[0]
+            / reproject_quantizer->x_scale_factor) / 10000000)) * 10000000
+            * reproject_quantizer->x_scale_factor;
+      reproject_quantizer->y_offset = ((I64) ((point[1]
+            / reproject_quantizer->y_scale_factor) / 10000000)) * 10000000
+            * reproject_quantizer->y_scale_factor;
+      reproject_quantizer->z_offset = ((I64) ((point[2]
+            / reproject_quantizer->z_scale_factor) / 10000000)) * 10000000
+            * reproject_quantizer->z_scale_factor;
+   }
+   // UTM to latlong
+   else
+   {
+      reproject_quantizer = new LASquantizer();
 
-		double point[3];
-		point[0] = (reader->header.min_x + reader->header.max_x) / 2;
-		point[1] = (reader->header.min_y + reader->header.max_y) / 2;
-		point[2] = (reader->header.min_z + reader->header.max_z) / 2;
-		gpc.to_target(point);
+      double point[3];
+      point[0] = (reader->header.min_x + reader->header.max_x) / 2;
+      point[1] = (reader->header.min_y + reader->header.max_y) / 2;
+      point[2] = (reader->header.min_z + reader->header.max_z) / 2;
+      gpc.to_target(point);
 
-		reproject_quantizer->x_scale_factor = gpc.get_target_precision();
-		reproject_quantizer->y_scale_factor = gpc.get_target_precision();
-		reproject_quantizer->z_scale_factor = reader->header.z_scale_factor;
-		reproject_quantizer->x_offset = ((I64) ((point[0]
-				/ reproject_quantizer->x_scale_factor) / 10000000)) * 10000000
-				* reproject_quantizer->x_scale_factor;
-		reproject_quantizer->y_offset = ((I64) ((point[1]
-				/ reproject_quantizer->y_scale_factor) / 10000000)) * 10000000
-				* reproject_quantizer->y_scale_factor;
-		reproject_quantizer->z_offset = ((I64) ((point[2]
-				/ reproject_quantizer->z_scale_factor) / 10000000)) * 10000000
-				* reproject_quantizer->z_scale_factor;
+      reproject_quantizer->x_scale_factor = gpc.get_target_precision();
+      reproject_quantizer->y_scale_factor = gpc.get_target_precision();
+      reproject_quantizer->z_scale_factor = reader->header.z_scale_factor;
+      reproject_quantizer->x_offset = ((I64) ((point[0]
+            / reproject_quantizer->x_scale_factor) / 10000000)) * 10000000
+            * reproject_quantizer->x_scale_factor;
+      reproject_quantizer->y_offset = ((I64) ((point[1]
+            / reproject_quantizer->y_scale_factor) / 10000000)) * 10000000
+            * reproject_quantizer->y_scale_factor;
+      reproject_quantizer->z_offset = ((I64) ((point[2]
+            / reproject_quantizer->z_scale_factor) / 10000000)) * 10000000
+            * reproject_quantizer->z_scale_factor;
 
-		int number_of_keys;
-		GeoProjectionGeoKeys* geo_keys = 0;
-		int num_geo_double_params;
-		double* geo_double_params = 0;
+      int number_of_keys;
+      GeoProjectionGeoKeys* geo_keys = 0;
+      int num_geo_double_params;
+      double* geo_double_params = 0;
 
-		if (gpc.get_geo_keys_from_projection(number_of_keys, &geo_keys,
-				num_geo_double_params, &geo_double_params,
-				!gpc.has_projection(false)))
-		{
-			reader->header.set_geo_keys(number_of_keys,
-					(LASvlr_key_entry*) geo_keys);
-			free(geo_keys);
-			if (geo_double_params)
-			{
-				reader->header.set_geo_double_params(num_geo_double_params,
-						geo_double_params);
-				free(geo_double_params);
-			}
-			else
-			{
-				reader->header.del_geo_double_params();
-			}
-			reader->header.del_geo_ascii_params();
-		}
-	}
+      if (gpc.get_geo_keys_from_projection(number_of_keys, &geo_keys,
+            num_geo_double_params, &geo_double_params,
+            !gpc.has_projection(false)))
+      {
+         reader->header.set_geo_keys(number_of_keys,
+               (LASvlr_key_entry*) geo_keys);
+         free(geo_keys);
+         if (geo_double_params)
+         {
+            reader->header.set_geo_double_params(num_geo_double_params,
+                  geo_double_params);
+            free(geo_double_params);
+         }
+         else
+         {
+            reader->header.del_geo_double_params();
+         }
+         reader->header.del_geo_ascii_params();
+      }
+   }
 
-	saved_quantizer = new LASquantizer();
-	*saved_quantizer = reader->header;
+   saved_quantizer = new LASquantizer();
+   *saved_quantizer = reader->header;
 }
+

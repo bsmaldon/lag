@@ -31,7 +31,7 @@
  */
 
 #ifndef _QUADTREEEXCEPTIONS_H
-#define	_QUADTREEEXCEPTIONS_H
+#define   _QUADTREEEXCEPTIONS_H
 
 #include <exception>
 
@@ -68,7 +68,7 @@ class DescriptiveException : public exception
 private:
 
 public:
-	const char *details;
+   const char *details;
 
     DescriptiveException(const char *details)
     {
@@ -135,7 +135,7 @@ public:
     virtual const char* what() const throw ()
     {
 
-    	return details; //"a variable has fallen outside all possible boundaries or values";
+       return details; //"a variable has fallen outside all possible boundaries or values";
     }
 
     OutOfBoundsException(const char *details)
@@ -164,5 +164,6 @@ public:
 };
 
 
-#endif	/* _QUADTREEEXCEPTIONS_H */
+#endif   /* _QUADTREEEXCEPTIONS_H */
+
 

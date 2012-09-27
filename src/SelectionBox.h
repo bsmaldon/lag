@@ -36,7 +36,7 @@
 ===============================================================================
 
  SelectionBox - Class to hold info about a selection box.  This will be a rectangle
- 	 	 	 	holding	four Points - one for each corner.
+                holding   four Points - one for each corner.
 
 ===============================================================================
 */
@@ -82,3 +82,4 @@ private:
 };
 
 #endif
+
